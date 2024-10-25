@@ -1,0 +1,28 @@
+/* Slow-motion Zoom Container */
+.img-hover-zoom--slowmo {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  
+  .img-hover-zoom--slowmo img {
+    transform-origin: 50% 65%;
+    transition: transform 5s, filter 3s ease-in-out;
+    filter: brightness(150%);
+  }
+  
+  /* The Transformation */
+  .img-hover-zoom--slowmo:hover img {
+    filter: brightness(100%);
+    transform: scale(3);
+  }
+  
+  /* Instagram Logo Overlay */
+  .img-hover-zoom--slowmo:hover .overlay {
+    opacity: 1;
+  }
+  
+  .overlay {
+    opacity: 0;
+  }
+  

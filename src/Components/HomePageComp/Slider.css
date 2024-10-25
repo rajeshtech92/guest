@@ -1,0 +1,24 @@
+
+.carousel-control-next:hover,
+.carousel-control-prev:hover {
+  filter: invert(100%);
+}
+
+.carousel-control-next:hover,
+.carousel-control-prev:hover {
+  background-color: #b99272bd;
+  opacity: 1;
+}
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.carousel-control-next,
+.carousel-control-prev {
+  top: 50%;
+  width: 5%;
+  height: 100%;
+  transform: translateY(-50%);
+}

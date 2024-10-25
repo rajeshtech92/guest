@@ -1,0 +1,97 @@
+
+.kf-subtitle {
+    margin: 0 0 10px 0;
+    position: relative;
+    display: inline-block;               
+    vertical-align: top;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #b99272;
+  }
+  .kf-title {
+    margin: 0 0 70px 0;
+    font-size: 42px;
+    font-family: "Oswald";
+    color: #fff;
+    font-weight: 400;
+}
+  .kf-titles {
+    width: 100%;
+  }
+  .align-center {
+    text-align: center !important;
+}
+
+.btn-35,
+.btn-35 *,
+.btn-35 :after,
+.btn-35 :before,
+.btn-35:after,
+.btn-35:before {
+    border: 0 solid;
+    box-sizing: border-box;
+   
+}
+
+.btn-35 :after{
+    background: #ffffff;
+}
+
+.btn-35 span ::after{
+    font: 14px Roboto, sans-serif;
+    color: #ffffff;
+}
+
+
+
+
+
+.btn-35 {
+    --height: 50px;
+    border: none;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    height: var(--height);
+    overflow: hidden;
+    padding: 0 32px;
+    display: inline-block;
+    position: relative;
+    text-transform: uppercase;
+    border-radius: 5px;
+    background: #b99272;
+    -webkit-mask-image: -webkit-radial-gradient(#000, #fff);
+
+}
+
+.btn-35 span {
+    
+    font: 14px Roboto, sans-serif;
+    color: #ffffff;
+
+
+}
+
+.btn-35:before {
+    --middle: calc(var(--height) / 2);
+    background: #fff;
+    content: "";
+    height: 100%;
+    left: calc(var(--height) * -1.01);
+    position: absolute;
+    top: 0;
+    transform: rotate(-90deg);
+    transform-origin: var(--middle) var(--middle);
+    transition: transform 0.6s;
+    width: calc(100% + var(--height));
+    z-index: -1;
+}
+
+.btn-35:hover:before {
+    transform: rotate(0deg);
+}
+.btn-35:hover span {
+    color: #b99272;
+   
+}

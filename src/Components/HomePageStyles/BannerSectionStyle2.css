@@ -1,0 +1,54 @@
+
+.section.kf-section-no-margin {
+    padding: 0;
+}
+.section.kf-reservation {
+    overflow: hidden;
+}
+.section {
+    padding: 130px 0;
+    position: relative;
+    z-index: 2;
+}
+.kf-container {
+    position: relative;
+    width: 100%;
+ 
+
+}
+
+.kf-reservation-form {
+    margin: 0 auto;
+    padding: 80px 45px 45px 45px;
+    position: relative;
+    max-width: 770px;
+    background: #090c0f;
+    border-top: 3px solid #b99272;
+}
+ /* .kf-subtitle img{
+    width: inherit;
+    height: 611px;
+} */
+
+
+
+.kf-reservation-form .image-left img {
+    left: -600px;
+    position: absolute;
+    top: -3px;
+    bottom: 0;
+    width: 600px;
+    height: 611px;
+    object-fit: cover;
+}
+
+.kf-reservation-form .image-right img {
+    left: auto;
+    position: absolute;
+    right: -600px;
+    top: -3px;
+    bottom: 0;
+    width: 600px;
+    height: 611px;
+    object-fit: cover;
+}

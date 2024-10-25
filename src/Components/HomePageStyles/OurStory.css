@@ -1,0 +1,78 @@
+.section {
+    padding: 130px 0;
+    position: relative;
+    z-index: 2;
+}
+.kf-testimonials-2 {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.kf-testimonials {
+    overflow: hidden;
+}
+.section-bg {
+    background-color: #090c0f;
+}
+
+.kf-testimonials-carousel {
+    padding: 35px 0 70px 0;
+    position: relative;
+}
+.kf-testimonials-carousel .slide-item {
+    
+    padding: 0 30px 30px 30px;
+    background: #0E1317;
+    min-height: 340px;
+    text-align: center;
+}
+.kf-testimonials-carousel .slide-item .stars {
+    margin-bottom: 15px;
+    font-size: 15px;
+    color: #b99272;
+}
+.kf-testimonials-carousel .slide-item .desc {
+    margin: 0 auto;
+    max-width: 100%;
+}
+.kf-testimonials-carousel .slide-item .image {
+    position: relative;
+    margin: 0px auto 15px auto;
+    width: 70px;
+    height: 70px;
+    font-size: 0;
+}
+.kf-testimonials-carousel .swiper-slide.swiper-slide-visible {
+    opacity: 0;
+}
+
+.swiper-container {
+    width: 100%;
+    height: 100%;
+}
+.swiper-pointer-events {
+    touch-action: pan-y;
+}
+.text{
+    color: #ffffff99;
+    font: 16px Roboto, sans-serif !important;
+    line-height: 25px !important;
+}
+.kf-testimonials-carousel .slide-item .image img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+}
+
+em {
+    display: block;
+    margin-top: 5px;
+    font-size: 15px;
+    color: #b99272;
+    font-style: normal;
+}
+

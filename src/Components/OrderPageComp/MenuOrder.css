@@ -1,0 +1,18 @@
+/* tableStyles.css */
+
+/* Reduce padding in table cells */
+.table-cell {
+  padding: 4px 8px; /* Adjust values as needed */
+  font-size: 14px;  /* You can adjust the font size if needed */
+}
+
+/* Style for table header */
+.table-header {
+  color: white;
+  border-bottom: 1px gray; /* Red line at the bottom of the header */
+  padding: 4px 8px; /* Adjust values as needed */
+}
+/* Pagination container styling */
+.pagination-container {
+  padding: 8px; /* Adjust padding as needed */
+}
