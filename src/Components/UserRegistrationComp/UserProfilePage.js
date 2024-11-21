@@ -121,7 +121,7 @@ function UserProfilePage() {
                     <h4>
                       {userData.firstName} {userData.lastName}
                     </h4>
-                    <p className="text-secondary mb-1">Reactjs Developer</p>
+                    <p className="text-secondary mb-1"></p>
                   </div>
                 </div>
               </div>
@@ -231,7 +231,7 @@ function UserProfilePage() {
             </div>
           </div>
           {/* Orders Section */}
-          <div className="cards mt-3">
+          {/* <div className="cards mt-3">
             <div className="cards-body">
               <h5>Your Orders</h5>
               <div className="order-table">
@@ -259,10 +259,10 @@ function UserProfilePage() {
                 included)
               </h6>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
-      <Footer />
+      <Footer setLoading={setLoading}/>
     </div>
   );
 }

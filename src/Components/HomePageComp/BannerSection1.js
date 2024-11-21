@@ -4,7 +4,7 @@ import { getAllContent } from '../../../src/Services/ApiService';
 import '../HomePageStyles/BannerSectionStyle1.css';
 import '../HomePageStyles/HomePageStyles.css';
 import category_bg from '../ImageCom/category_bg.jpg';
-const BannerSection1 = () => {
+const BannerSection1 = ({ setLoading }) => {
     const [content, setContent] = useState({
         images: [],
         heading1: '',
@@ -12,44 +12,61 @@ const BannerSection1 = () => {
         paragraph1: ''
     });
 
-    useEffect(() => {
-        const fetchContent = async () => {
-            try {
-                const data = await getAllContent();
-                console.log('API Response:', data);
+useEffect(() => {
+    const fetchContent = async () => {
+        
+        try {
+            setLoading(true);
+            const storedContent = localStorage.getItem('bannerContent');
+                if (storedContent) {
+                    // If data exists in local storage, parse and set it
+                    const parsedContent = JSON.parse(storedContent);
+                    setContent(parsedContent);
+                    console.log('Loaded content from local storage');
+                } else {
+                    // If data is not in local storage, fetch it from the API
+                    const data = await getAllContent();
+                    console.log('API Response:', data);
 
-                // IDs to include for images, headings, and paragraphs
-                const imageIds = [74, 75, 76, 77];
-                const headingId1 = 78;
-                const headingId2 = 79;
-                const paragraphId1 = 80;
+                    // IDs to include for images, headings, and paragraphs
+                    const imageIds = [74, 75, 76, 77];
+                    const headingId1 = 78;
+                    const headingId2 = 79;
+                    const paragraphId1 = 80;
 
-                // Filtering data
-                const filteredImages = data
-                    .filter(item => imageIds.includes(item.contentId))
-                    .map(item => ({
-                        src: `data:image/jpg;base64,${item.contentData}`,
-                        id: item.contentId
-                    }));
+                    // Filtering data
+                    const filteredImages = data
+                        .filter(item => imageIds.includes(item.contentId))
+                        .map(item => ({
+                            src: `data:image/jpg;base64,${item.contentData}`,
+                            id: item.contentId
+                        }));
 
-                const heading1 = data.find(item => item.contentId === headingId1)?.contentData || '';
-                const heading2 = data.find(item => item.contentId === headingId2)?.contentData || '';
-                const paragraph1 = data.find(item => item.contentId === paragraphId1)?.contentData || '';
+                    const heading1 = data.find(item => item.contentId === headingId1)?.contentData || '';
+                    const heading2 = data.find(item => item.contentId === headingId2)?.contentData || '';
+                    const paragraph1 = data.find(item => item.contentId === paragraphId1)?.contentData || '';
 
-                setContent({
-                    images: filteredImages,
-                    heading1,
-                    heading2,
-                    paragraph1
-                });
+                    const contentData = {
+                        images: filteredImages,
+                        heading1,
+                        heading2,
+                        paragraph1
+                    };
+
+                    // Save the fetched content in local storage
+                    localStorage.setItem('bannerContent', JSON.stringify(contentData));
+                    setContent(contentData);
+                    console.log('API data fetched and stored in local storage');
+                }
             } catch (error) {
-                console.error('There was an error fetching the data!', error);
+                console.error('Error fetching content:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchContent();
-    }, []);
-
+    }, [setLoading]);
     // Defined static menu names associated with specific images
     const menuNames = [
         { id: 74, name: 'Biryani' },
@@ -60,6 +77,7 @@ const BannerSection1 = () => {
 
     return (
         <section className="section kf-category" style={{ backgroundImage: `url(${category_bg})` }}>
+      
             <div className="">
                 <div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
@@ -68,6 +86,7 @@ const BannerSection1 = () => {
                                 const menuName = menuNames.find(menu => menu.id === image.id);
                                 console.log('Image Data:', image);
                                 console.log('Menu Name:', menuName);
+                                console.log('data:', content);
 
                                 return (
                                     <div key={index} className="grid-item">
@@ -98,13 +117,11 @@ const BannerSection1 = () => {
                                 {content.paragraph1}
                             </p>
                         </div>
-                        <button className="btn-35">
-                            <span>GRAB A BITE TO EAT <i className="fas fa-chevron-right"></i></span>
-                        </button>
                     </div>
                 </div>
             </div>
-        </section>
+        
+    </section>
     );
 };
 

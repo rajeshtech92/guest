@@ -134,8 +134,8 @@ function Catering() {
             </div> */}
         
           </Grid>
-          <BannerSection2/>
-          <Footer />
+          <BannerSection2 setLoading={setLoading}/>
+          <Footer setLoading={setLoading}/>
         </>
       )}
     </div>

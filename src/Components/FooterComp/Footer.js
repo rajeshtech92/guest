@@ -6,36 +6,58 @@ import "./Footer.css";
 import { FooterImage } from "../ApiStore/Api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot, faPhone } from "@fortawesome/free-solid-svg-icons";
-function Footer() {
+function Footer({ setLoading }) {
   const [images, setImages] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [logoImage, setLogoImage] = useState("");
   useEffect(() => {
-    // Fetching images from the API
-    axios
-      .get(FooterImage)
-      .then((response) => {
-        // Filtering images based on contentId (e.g., contentId 17, 18, 19)
-        const filteredImages = response.data.filter(
-          (image) =>
-            image.contentId === 20 ||
-            image.contentId === 21 ||
-            image.contentId === 22
-        );
-        // Filtering the logo image based on contentId
-        const logo = response.data.find((image) => image.contentId === 87);
-        setImages(filteredImages);
-        if (logo) {
-          setLogoImage(`data:image/jpeg;base64,${logo.contentData}`);
-        }
-        setImages(filteredImages);
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the images!", error);
-      });
-  }, []);
+    setLoading(true);
+
+    // Check if the data is in localStorage
+    const cachedImages = localStorage.getItem("footerImages");
+    const cachedLogo = localStorage.getItem("footerLogo");
+
+    if (cachedImages && cachedLogo) {
+      // If data exists in localStorage, use it
+      setImages(JSON.parse(cachedImages));
+      setLogoImage(cachedLogo);
+      setLoading(false); // Done loading
+    } else {
+      // Otherwise, fetch the data from API
+      axios
+        .get(FooterImage)
+        .then((response) => {
+          // Filtering images based on contentId (e.g., contentId 20, 21, 22)
+          const filteredImages = response.data.filter(
+            (image) =>
+              image.contentId === 20 ||
+              image.contentId === 21 ||
+              image.contentId === 22
+          );
+          // Filtering the logo image based on contentId
+          const logo = response.data.find((image) => image.contentId === 87);
+
+          // Save the data to localStorage
+          localStorage.setItem("footerImages", JSON.stringify(filteredImages));
+          if (logo) {
+            const logoData = `data:image/jpeg;base64,${logo.contentData}`;
+            localStorage.setItem("footerLogo", logoData);
+            setLogoImage(logoData);
+          }
+
+          setImages(filteredImages);
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error("There was an error fetching the images!", error);
+          setImages([]); // Set empty array in case of error
+        })
+        .finally(() => {
+          setLoading(false); // Done loading
+        });
+    }
+  }, [setLoading]);
 
   const handleOpen = (image) => {
     setSelectedImage(image);

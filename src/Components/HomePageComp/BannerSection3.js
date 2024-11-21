@@ -4,7 +4,7 @@ import '../HomePageStyles/HomePageStyles.css';
 import category_bg from '../ImageCom/category_bg.jpg';
 import { getAllContent } from '../../../src/Services/ApiService';
 
-function BannerSection3() {
+function BannerSection3({ setLoading }) {
     const [content, setContent] = useState({
         images: [],
         heading1: '',
@@ -16,26 +16,32 @@ function BannerSection3() {
         paragraph4: '',
         paragraph5: '',
     });
-
     useEffect(() => {
         const fetchContent = async () => {
+            setLoading(true); // Start the loader
+
+            // Check if data is already in localStorage
+            const cachedContent = localStorage.getItem('contentData');
+            if (cachedContent) {
+                setContent(JSON.parse(cachedContent));
+                setLoading(false); // Stop the loader if data is from cache
+                return;
+            }
+
             try {
                 const data = await getAllContent();
                 const imageIds = [1032, 1033, 1034, 1035];
                 const cardHeadingIds = [1037, 1038, 1039, 1040];
-                const cardParagraphIds = [1042,1043,1044,1045]
+                const cardParagraphIds = [1042, 1043, 1044, 1045];
                 const headingIDS = {
                     headingId1: 1029,
                     headingId2: 1036,
                 };
                 const paragraphIds = {
                     paragraphId1: 1041,
-                    // paragraphId2: '',
-                    // paragraphId3: '',
-                    // paragraphId4: '',
-                    // paragraphId5: '',
                 };
 
+                // Filter images by specific contentIds
                 const filteredImages = data
                     .filter(item => imageIds.includes(item.contentId))
                     .map(item => ({
@@ -43,38 +49,49 @@ function BannerSection3() {
                         id: item.contentId
                     }));
 
+                // Get filtered headings
                 const filteredHeadings = cardHeadingIds.map(headingId => {
                     const heading = data.find(item => item.contentId === headingId);
                     return heading ? heading.contentData : '';
                 });
+
+                // Get filtered paragraphs
                 const filteredParagraphs = cardParagraphIds.map(paragraphId => {
                     const paragraph = data.find(item => item.contentId === paragraphId);
                     return paragraph ? paragraph.contentData : '';
                 });
 
+                // Get specific headings and paragraph
                 const heading1 = data.find(item => item.contentId === headingIDS.headingId1)?.contentData || '';
                 const heading2 = data.find(item => item.contentId === headingIDS.headingId2)?.contentData || '';
-
                 const paragraph1 = data.find(item => item.contentId === paragraphIds.paragraphId1)?.contentData || '';
 
-
-                setContent({
+                const newContent = {
                     images: filteredImages,
                     heading1,
                     heading2,
                     cardHeadings: filteredHeadings,
-                    cardParagraph : filteredParagraphs,
+                    cardParagraph: filteredParagraphs,
                     paragraph1
-                });
+                };
+
+                setContent(newContent);
+                // Store the fetched content in localStorage
+                localStorage.setItem('contentData', JSON.stringify(newContent));
+
             } catch (error) {
                 console.error('There was an error fetching the data!', error);
+            } finally {
+                setLoading(false); // Stop the loader after fetching data
             }
         };
+
         fetchContent();
-    }, []);
+    }, [setLoading]); 
 
     return (
         <section className="banner3-section kf-about-2" style={{ backgroundImage: `url(${category_bg})` }}>
+    
             {/* <div className="container">
                 <div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-5 align-self-center">
@@ -113,6 +130,7 @@ function BannerSection3() {
                     </div>
                 </div>
             </div> */}
+
         </section>
     );
 }

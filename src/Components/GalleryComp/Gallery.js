@@ -204,8 +204,8 @@ function Gallery() {
               </div>
             ))}
           </div> */}
-          <BannerSection2/>
-          <Footer />
+          <BannerSection2 setLoading={setLoading}/>
+          <Footer setLoading={setLoading}/>
         </>
       )}
     </div>

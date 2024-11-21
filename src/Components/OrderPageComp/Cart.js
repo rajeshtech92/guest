@@ -20,6 +20,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import Card from "@mui/material/Card";
 import "./Cart.css";
 
 const Cart = () => {
@@ -184,7 +185,7 @@ const Cart = () => {
   };
   const handleAddToOrder = async () => {
     navigate("/menuOrder");
-    const newOrderId = 0; 
+    const newOrderId = 0;
     console.log(selectedMenu);
     console.log(inputRows);
 
@@ -192,42 +193,41 @@ const Cart = () => {
 
     // Iterate over each menuId in selectedMenu
     selectedMenu.forEach((menuId, index) => {
-        // Create an order item for each row in inputRows
-        // Only use the first menuId for each menuItemId
-        if (index < inputRows.length) {
-            const row = inputRows[index]; // Ensure you only access existing rows
-            orderItems.push({
-                orderItemID: 0, // Adjust according to your API requirements
-                orderID: newOrderId,
-                menuId: parseInt(menuId), // Current menuId from selectedMenu
-                menuItemId: parseInt(row.menuItemId),
-                quantity: parseInt(row.quantity),
-                price: parseFloat(row.price), 
-            });
-        }
+      // Create an order item for each row in inputRows
+      // Only use the first menuId for each menuItemId
+      if (index < inputRows.length) {
+        const row = inputRows[index]; // Ensure you only access existing rows
+        orderItems.push({
+          orderItemID: 0, // Adjust according to your API requirements
+          orderID: newOrderId,
+          menuId: parseInt(menuId), // Current menuId from selectedMenu
+          menuItemId: parseInt(row.menuItemId),
+          quantity: parseInt(row.quantity),
+          price: parseFloat(row.price),
+        });
+      }
     });
 
     try {
-        console.log(orderItems);
-        const response = await fetch(
-            "https://guesthouse-api-dje8gvcwayfdfmbr.eastus-01.azurewebsites.net/api/Orders",
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    orderId: newOrderId,
-                    orderType: 1, // Adjust according to your needs
-                    orderStatus: 1, // Adjust according to your needs
-                    orderCreateDate: new Date().toISOString(), // Current date-time
-                    totalAmount: 0, // Total amount of the order including GST
-                    isActive: true,
-                    orderItem: orderItems,
-                }),
-            }
-        );
+      console.log(orderItems);
+      const response = await fetch(
+        "https://guesthouse-api-dje8gvcwayfdfmbr.eastus-01.azurewebsites.net/api/Orders",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            orderId: newOrderId,
+            orderType: 1, // Adjust according to your needs
+            orderStatus: 1, // Adjust according to your needs
+            orderCreateDate: new Date().toISOString(), // Current date-time
+            totalAmount: 0, // Total amount of the order including GST
+            isActive: true,
+            orderItem: orderItems,
+          }),
+        }
+      );
 
-        // Handle the response here if needed
-    
+      // Handle the response here if needed
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -277,24 +277,26 @@ const Cart = () => {
 
   const grandTotal = calculateGrandTotal();
   return (
-    <div style={{ backgroundColor: "#f5f5f5" }}>
+    <div>
+      <h4 className="pageTitle">ordering standard</h4>
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "flex-left",
+          justifyContent: "flex-end",
           gap: "20px",
-          marginLeft: "20px",
+          marginLeft: "auto",
+          marginRight: "22px",
         }}
       >
-        <h4 style={{ color: "rgb(92, 107, 192)" }}>Select Your Menu</h4>
+        <div>Select Your Menu</div>
         <Select
           multiple
           value={selectedMenu} // Ensure this is an array
           onChange={handleMenuChange}
           displayEmpty
           sx={{
-            width: "200px",
+            width: "225px",
             height: "40px",
             marginTop: "20px",
             marginBottom: "20px",
@@ -320,208 +322,215 @@ const Cart = () => {
         </Select>
       </Box>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead className="back-ground">
-            <TableRow>
-              <TableCell className="texts-color">Sno</TableCell>
-              <TableCell className="texts-color">Menu Item</TableCell>
-              <TableCell className="texts-color">Unit</TableCell>
-              <TableCell className="texts-color">Price</TableCell>
-              <TableCell className="texts-color">Total</TableCell>
-              <TableCell className="texts-color">GST (5%)</TableCell>
-              {/* Remove Final Total Column */}
-              <TableCell className="texts-color">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {inputRows.map((row, index) => {
-              const totals = calculateTotals(row);
+      <TableContainer>
+        <Card sx={{ maxWidth: 1400, marginLeft: "20px", marginBottom: "20px" }}>
+          <Table>
+            <TableHead className="back-ground">
+              <TableRow>
+                <TableCell className="texts-color">Sno</TableCell>
+                <TableCell className="texts-color">Menu Item</TableCell>
+                <TableCell className="texts-color">Unit</TableCell>
+                <TableCell className="texts-color">Price</TableCell>
+                <TableCell className="texts-color">Total</TableCell>
+                <TableCell className="texts-color">GST (5%)</TableCell>
+                {/* Remove Final Total Column */}
+                <TableCell className="texts-color">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {inputRows.map((row, index) => {
+                const totals = calculateTotals(row);
 
-              return (
-                <TableRow key={row.id}>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>
-                    <Select
-                      value={
-                        row.menuItemId ? `${row.menuItemId}-${row.price}-${row.quantity}` : ""
-                      }
-                      onChange={(event) => handleMenuItemChange(event, row.id)}
-                      displayEmpty
-                      sx={{ width: "340px", height: "40px" }}
-                    >
-                      <MenuItem value="" disabled>
-                        Select Menu Item
-                      </MenuItem>
-                      {menuItems
-                        .filter((item) => selectedMenu.includes(item.menuId))
-                        .map((item) =>
-                          subMenuPrices
-                            .filter(
-                              (subMenu) =>
-                                subMenu.menuItemId === item.menuItemId
-                            )
-                            .map((subMenu) => (
-                              <MenuItem
-                                key={`${item.menuItemId}-${subMenu.price}-${subMenu.quantity}`}
-                                value={`${subMenu.menuItemId}-${subMenu.price}-${subMenu.quantity}`}
-                              >
-                                {item.menuItemName} -{" "}
-                                {getQuantityLabel(subMenu.quantity)}
-                              </MenuItem>
-                            ))
-                        )}
-                    </Select>
-                  </TableCell>
-                  <TableCell>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginRight: "70%",
-                      }}
-                    >
-                      <FontAwesomeIcon
-                        icon={faMinusCircle}
+                return (
+                  <TableRow key={row.id}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>
+                      <Select
+                        value={
+                          row.menuItemId
+                            ? `${row.menuItemId}-${row.price}-${row.quantity}`
+                            : ""
+                        }
+                        onChange={(event) =>
+                          handleMenuItemChange(event, row.id)
+                        }
+                        displayEmpty
+                        sx={{ width: "340px", height: "40px" }}
+                      >
+                        <MenuItem value="" disabled>
+                          Select Menu Item
+                        </MenuItem>
+                        {menuItems
+                          .filter((item) => selectedMenu.includes(item.menuId))
+                          .map((item) =>
+                            subMenuPrices
+                              .filter(
+                                (subMenu) =>
+                                  subMenu.menuItemId === item.menuItemId
+                              )
+                              .map((subMenu) => (
+                                <MenuItem
+                                  key={`${item.menuItemId}-${subMenu.price}-${subMenu.quantity}`}
+                                  value={`${subMenu.menuItemId}-${subMenu.price}-${subMenu.quantity}`}
+                                >
+                                  {item.menuItemName} -{" "}
+                                  {getQuantityLabel(subMenu.quantity)}
+                                </MenuItem>
+                              ))
+                          )}
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <div
                         style={{
-                          fontSize: 30,
-                          cursor:
-                            row.unit <= 0 || !row.menuItemId
-                              ? "not-allowed"
-                              : "pointer",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginRight: "70%",
                         }}
-                        onClick={() => {
-                          if (row.menuItemId && row.unit > 0) {
-                            handleQuantityChange(row.unit - 1, row.id);
-                          }
-                        }}
-                        color={row.unit <= 3 ? "#e53935" : "grey"}
-                        disabled={!row.menuItemId || row.unit <= 0}
-                      />
+                      >
+                        <FontAwesomeIcon
+                          icon={faMinusCircle}
+                          style={{
+                            fontSize: 30,
+                            cursor:
+                              row.unit <= 0 || !row.menuItemId
+                                ? "not-allowed"
+                                : "pointer",
+                          }}
+                          onClick={() => {
+                            if (row.menuItemId && row.unit > 0) {
+                              handleQuantityChange(row.unit - 1, row.id);
+                            }
+                          }}
+                          color={row.unit <= 3 ? "#e53935" : "grey"}
+                          disabled={!row.menuItemId || row.unit <= 0}
+                        />
 
-                      <input
-                        type="text"
-                        value={row.unit}
-                        readOnly
-                        style={{
-                          width: "50px",
-                          height: "30px",
-                          textAlign: "center",
-                          lineHeight: "30px",
-                          margin: "0 15px",
-                          background: "#fafafa",
-                          color: "black",
-                          paddingLeft: "5px",
-                          fontSize: "12px",
-                        }}
-                      />
-                      <FontAwesomeIcon
-                        icon={faPlusCircle}
-                        style={{
-                          fontSize: 30,
-                          cursor:
-                            row.unit >= 20 || !row.menuItemId
-                              ? "not-allowed"
-                              : "pointer",
-                        }}
-                        onClick={() => {
-                          if (row.menuItemId && row.unit < 20) {
-                            handleQuantityChange(row.unit + 1, row.id);
-                          }
-                        }}
-                        color={row.unit < 4 ? "green" : "black"}
-                        disabled={!row.menuItemId || row.unit >= 3}
-                      />
-                    </div>
-                  </TableCell>
+                        <input
+                          type="text"
+                          value={row.unit}
+                          readOnly
+                          style={{
+                            width: "50px",
+                            height: "30px",
+                            textAlign: "center",
+                            lineHeight: "30px",
+                            margin: "0 15px",
+                            background: "#fafafa",
+                            color: "black",
+                            paddingLeft: "5px",
+                            fontSize: "12px",
+                          }}
+                        />
+                        <FontAwesomeIcon
+                          icon={faPlusCircle}
+                          style={{
+                            fontSize: 30,
+                            cursor:
+                              row.unit >= 20 || !row.menuItemId
+                                ? "not-allowed"
+                                : "pointer",
+                          }}
+                          onClick={() => {
+                            if (row.menuItemId && row.unit < 20) {
+                              handleQuantityChange(row.unit + 1, row.id);
+                            }
+                          }}
+                          color={row.unit < 4 ? "green" : "black"}
+                          disabled={!row.menuItemId || row.unit >= 3}
+                        />
+                      </div>
+                    </TableCell>
 
-                  <TableCell>
-                    ₹{row.price ? row.price.toFixed(2) : "0.00"}
-                  </TableCell>
-                  <TableCell>
-                    ₹{row.totalPrice ? row.totalPrice.toFixed(2) : "0.00"}
-                  </TableCell>
-                  <TableCell>
-                    ₹{row.gstAmount ? row.gstAmount.toFixed(2) : "0.00"}
-                  </TableCell>
-                  <TableCell>
-                    <Grid container spacing={1} justifyContent="center">
-                      <Grid item>
-                        {index === inputRows.length - 1 && (
-                          <IconButton
-                            className="icon-add"
-                            onClick={handleAddRow}
-                            style={{
-                              background: "green",
-                              color: "white",
-                              width: "30px",
-                              height: "30px",
-                              fontSize: 30,
-                            }}
-                          >
-                            <AddIcon />
-                          </IconButton>
-                        )}
-                        {inputRows.length > 1 && (
-                          <IconButton
-                            className="icon-btn-minus"
-                            onClick={() => handleRemoveRow(row.id)}
-                            style={{
-                              background: "#e53935",
-                              color: "white",
-                              width: "30px",
-                              height: "30px",
-                              fontSize: 30,
-                              marginLeft: "3px",
-                            }}
-                          >
-                            <RemoveIcon />
-                          </IconButton>
-                        )}
+                    <TableCell>
+                      ₹{row.price ? row.price.toFixed(2) : "0.00"}
+                    </TableCell>
+                    <TableCell>
+                      ₹{row.totalPrice ? row.totalPrice.toFixed(2) : "0.00"}
+                    </TableCell>
+                    <TableCell>
+                      ₹{row.gstAmount ? row.gstAmount.toFixed(2) : "0.00"}
+                    </TableCell>
+                    <TableCell>
+                      <Grid container spacing={1} justifyContent="center">
+                        <Grid item>
+                          {index === inputRows.length - 1 && (
+                            <IconButton
+                              className="icon-add"
+                              onClick={handleAddRow}
+                              style={{
+                                background: "green",
+                                color: "white",
+                                width: "30px",
+                                height: "30px",
+                                fontSize: 30,
+                              }}
+                            >
+                              <AddIcon />
+                            </IconButton>
+                          )}
+                          {inputRows.length > 1 && (
+                            <IconButton
+                              className="icon-btn-minus"
+                              onClick={() => handleRemoveRow(row.id)}
+                              style={{
+                                background: "#e53935",
+                                color: "white",
+                                width: "30px",
+                                height: "30px",
+                                fontSize: 30,
+                                marginLeft: "3px",
+                              }}
+                            >
+                              <RemoveIcon />
+                            </IconButton>
+                          )}
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
 
-            <TableRow>
-              <TableCell
-                colSpan={5}
-                style={{ textAlign: "right", color: "red" }}
-              >
-                <strong>GRAND TOTAL: GST INCLUDED</strong>
-              </TableCell>
-              <TableCell style={{ color: "green" }}>
-                <strong>
-                  ₹
-                  {inputRows
-                    .reduce((sum, row) => sum + (row.grandTotal || 0), 0)
-                    .toFixed(2)}
-                </strong>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+              <TableRow>
+                <TableCell
+                  colSpan={5}
+                  style={{ textAlign: "right", color: "red" }}
+                >
+                  <strong>GRAND TOTAL: GST INCLUDED</strong>
+                </TableCell>
+                <TableCell style={{ color: "green" }}>
+                  <strong>
+                    ₹
+                    {inputRows
+                      .reduce((sum, row) => sum + (row.grandTotal || 0), 0)
+                      .toFixed(2)}
+                  </strong>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Card>
+        <Box sx={{ textAlign: "center", marginTop: "20px" }}>
+          <Button
+            variant="contained"
+            onClick={handleAddToOrder}
+            style={{
+              height: "50px",
+              background: "#5c6bc0",
+              fontFamily: "sans-serif",
+              fontWeight: "600",
+              float: "right",
+              marginRight: "18px",
+              textTransform: "lowercase",
+              marginBottom: "8px",
+            }}
+          >
+            Place Order
+          </Button>
+        </Box>
       </TableContainer>
-
-      <Box sx={{ textAlign: "center", marginTop: "20px" }}>
-        <Button
-          variant="contained"
-          onClick={handleAddToOrder}
-          style={{
-            height: "50px",
-            background: "#5c6bc0",
-            fontFamily: "sans-serif",
-            fontWeight: "600",
-            float: "right",
-            marginRight: "10px",
-          }}
-        >
-          Place Order
-        </Button>
-      </Box>
     </div>
   );
 };

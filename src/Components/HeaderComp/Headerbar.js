@@ -13,24 +13,37 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Link as RouterLink } from "react-router-dom"; // Updated to use RouterLink
 import { Route, Routes, useNavigate } from "react-router-dom";
-import logo from '../ImageCom/logo.jpg';
-import ImagesMapping from '../HomePageComp/ImagesMapping';
-import Footer from '../FooterComp/Footer';
+import logo from "../ImageCom/logo.jpg";
+import ImagesMapping from "../HomePageComp/ImagesMapping";
+import Footer from "../FooterComp/Footer";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faCog, faTachometerAlt, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faCog,
+  faTachometerAlt,
+  faSignOutAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import Slider from "../HomePageComp/Slider";
-import Gallery from '../GalleryComp/Gallery';
+import Gallery from "../GalleryComp/Gallery";
 import Catering from "../CateringCom/Catering";
-import Order from '../OrderPageComp/Order';
-import LinearProgress from '@mui/material/LinearProgress';
-import BannerSection1 from '../HomePageComp/BannerSection1';
-import BannerSection2 from '../HomePageComp/BannerSection2';
-import BannerSection3 from '../HomePageComp/BannerSection3';
-import BannerSectionCTA from '../HomePageComp/BannerSectionCTA';
-import OurStory from '../HomePageComp/OurStory';
+import Order from "../OrderPageComp/Order";
+import LinearProgress from "@mui/material/LinearProgress";
+import BannerSection1 from "../HomePageComp/BannerSection1";
+import BannerSection2 from "../HomePageComp/BannerSection2";
+import BannerSection3 from "../HomePageComp/BannerSection3";
+import BannerSectionCTA from "../HomePageComp/BannerSectionCTA";
+import OurStory from "../HomePageComp/OurStory";
 
-const pages = ["HOME", "ORDER ONLINE", "BANQUETS", "MENU", "CATERING","GALLERY", "LOCATION"];
+const pages = [
+  "HOME",
+  "ORDER ONLINE",
+  "BANQUETS",
+  "MENU",
+  "CATERING",
+  "GALLERY",
+  "LOCATION",
+];
 const settings = [
   { name: "Profile", icon: faUser },
   { name: "Account", icon: faCog },
@@ -43,10 +56,10 @@ const storedId = localStorage.getItem("userId");
 function MenuPage() {
   return <div>This is the Menu Page</div>;
 }
-function HeaderBar(){
+function HeaderBar() {
   return <div>This is the Home Page</div>;
 }
-function Banquet(){
+function Banquet() {
   return <div>This is the Home Page</div>;
 }
 function Headerbar() {
@@ -54,8 +67,8 @@ function Headerbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true); // New loading state
-  const [delayed, setDelayed] = useState(true); // New state for delay
+  const [activePage, setActivePage] = useState("");
+  const [loading, setLoading] = useState(true); 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -66,24 +79,21 @@ function Headerbar() {
 
   const handleCloseNavMenu = (page) => {
     setAnchorElNav(null);
+    setActivePage(page);
     if (page === "MENU") {
       navigate("/menuPage");
     } else if (page === "HOME") {
       navigate("/headerHome");
-    } 
-    else if (page === "ORDER ONLINE") {
-      navigate("/menuOrder"); // Add a route for ORDER ONLINE  
-    }
-    else if (page === "BANQUETS") {
-      navigate("/banquetPage"); 
+    } else if (page === "ORDER ONLINE") {
+      navigate("/menuOrder");
+    } else if (page === "BANQUETS") {
+      navigate("/banquetPage");
     } else if (page === "CATERING") {
-      navigate("/cateringPage"); // Add a route for CATERING
-    }
-    else if (page === "GALLERY") {
+      navigate("/cateringPage");
+    } else if (page === "GALLERY") {
       navigate("/galleryPage");
-    }
-    else if (page === "LOCATION") {
-      navigate("/locationPage"); // Add a route for LOCATION
+    } else if (page === "LOCATION") {
+      navigate("/locationPage");
     }
   };
 
@@ -93,249 +103,273 @@ function Headerbar() {
 
   const logOut = () => {
     localStorage.clear("items");
-    navigate("/login");
+    navigate("/");
   };
 
   const UserProfile = () => {
     navigate("/userProfile");
   };
-
   useEffect(() => {
-    axios.get(`https://guesthouse-api-dje8gvcwayfdfmbr.eastus-01.azurewebsites.net/api/Users/${storedId}`)
-      .then((response) => {
-        setUserData(response.data);
-      })
-      .finally(() => {
-        setTimeout(() => {
-          setLoading(false);
-          setDelayed(false);
-        }, 1000);
-      });
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `https://guesthouse-api-dje8gvcwayfdfmbr.eastus-01.azurewebsites.net/api/Users/${storedId}`
+      );
+      setUserData(response.data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+ 
+    fetchData();
   }, []);
 
   return (
-    <div className="home-bg">
-     {loading || delayed ? (
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-          <img src={logo} alt="Logo" style={{ marginBottom: '10px', width: '150px', height: '150px' }} /> {/* Display the logo */}
-           <Box sx={{ width: '110px'}}>
-      <LinearProgress color="success" style={{height:'1px'}}/>
-    </Box>
-        </div>
-      ) : (
-        <>
-      <AppBar
-        position="static"
-        sx={{
-          backgroundColor: "black",
-          position: "sticky",
-          top: "0",
-          zIndex: "999",
-        }}
-      >
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href=""
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 600,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              <img
-                src={logo}
-                alt="Logo"
-                style={{ height: "120px", width: "auto" }}
-              />
-            </Typography>
-            <Box
-              sx={{
-                flexGrow: 1,
-                display: { xs: "flex", md: "none" },
-                justifyContent: "center",
-              }}
-            >
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: "block", md: "none" },
-                }}
-              >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={() => handleCloseNavMenu(page)}>
-                    <Typography textAlign="center">{page}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
+    <>
+      <div className="home-bg" style={{overflow: "hidden"}}>
+        {loading ? (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <img
+              src={logo}
+              alt="Logo"
+              style={{ marginBottom: "10px", width: "150px", height: "150px" }}
+            />
+            {/* Display the logo */}
+            <Box sx={{ width: "110px", overflowX: "hidden" }}>
+              <LinearProgress color="success" style={{ height: "1px" }} />
             </Box>
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href=""
+          </div>
+        ) : (
+          <>
+            <AppBar
+              position="fixed"
               sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
+                backgroundColor: "black",
+                overflowX: "hidden",
+                top: "0",
+                zIndex: "999",
               }}
             >
-              {/* <img
+              <Container maxWidth="xl" sx={{ overflowX: "hidden" }}>
+                <Toolbar disableGutters>
+                  <Typography
+                    variant="h6"
+                    noWrap
+                    component="a"
+                    href=""
+                    sx={{
+                      mr: 2,
+                      display: { xs: "none", md: "flex" },
+                      fontFamily: "monospace",
+                      fontWeight: 600,
+                      letterSpacing: ".3rem",
+                      color: "inherit",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <img
+                      src={logo}
+                      alt="Logo"
+                      style={{ height: "120px", width: "auto" }}
+                    />
+                  </Typography>
+                  <Box
+                    sx={{
+                      flexGrow: 1,
+                      display: { xs: "flex", md: "none" },
+                      justifyContent: "center",
+                    }}
+                  >
+                    <IconButton
+                      size="large"
+                      aria-label="account of current user"
+                      aria-controls="menu-appbar"
+                      aria-haspopup="true"
+                      onClick={handleOpenNavMenu}
+                      color="inherit"
+                    >
+                      <MenuIcon />
+                    </IconButton>
+                    <Menu
+                      id="menu-appbar"
+                      anchorEl={anchorElNav}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                      }}
+                      open={Boolean(anchorElNav)}
+                      onClose={handleCloseNavMenu}
+                      sx={{
+                        flexGrow: 1,
+                        display: { xs: "non", md: "flex" },
+                        justifyContent: "center",
+                      }}
+                    >
+                      {pages.map((page) => (
+                        <MenuItem
+                          key={page}
+                          onClick={() => handleCloseNavMenu(page)}
+                        >
+                          <Typography textAlign="center">{page}</Typography>
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+                  <Typography
+                    variant="h5"
+                    noWrap
+                    component="a"
+                    href=""
+                    sx={{
+                      mr: 2,
+                      display: { xs: "flex", md: "none" },
+                      flexGrow: 1,
+                      fontFamily: "monospace",
+                      fontWeight: 700,
+                      letterSpacing: ".3rem",
+                      color: "inherit",
+                      textDecoration: "none",
+                    }}
+                  >
+                    {/* <img
                 src={logo}
                 alt="Logo"
                 style={{ height: "40px", width: "auto" }}
               /> */}
-            </Typography>
-            <Box
-              sx={{
-                flexGrow: 1,
-                display: { xs: "none", md: "flex" },
-                justifyContent: "center",
-              }}
-            >
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={() => handleCloseNavMenu(page)}
-                  sx={{
-                    my: 2,
-                    color: "white",
-                    display: "block",
-                    fontSize: "14px",
-                    lineHeight: "50px",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.03em",
-                    textDecoration: "none",
-                    fontWeight: 600,
-                    "&:hover": {
-                      color: "#b99272",
-                    },
-                  }}
-                >
-                  {page}
-                </Button>
-              ))}
-            </Box>
-            <RouterLink
-              to="/menuOrder" // Update to your route
-              className="btn-epic"
-              style={{ width: "12%" }}
-            >
-              <div>
-                <span>ORDER NOW</span>
-                <span>ORDER NOW</span>
-              </div>
-            </RouterLink>
-            <Box sx={{ flexGrow: 0, ml: "20px" }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  {userData && (
-                    <Typography sx={{ color: "white", marginRight: 1 }}>
-                      {userData.firstName}
-                    </Typography>
-                  )}
-                  <Avatar alt={userData ? userData.firstName : ""} />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "68px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem
-                    key={setting.name}
-                    onClick={() => {
-                      handleCloseUserMenu();
-                      if (setting.name === "Logout") {
-                        logOut();
-                      }
-                      if (setting.name === "Profile") {
-                        UserProfile();
-                      }
+                  </Typography>
+                  <Box
+                    sx={{
+                      flexGrow: 1,
+                      display: { xs: "none", md: "flex" },
+                      justifyContent: "center",
                     }}
                   >
-                    <FontAwesomeIcon
-                      icon={setting.icon}
-                      style={{ marginRight: "10px" }}
-                    />
-                    <Typography textAlign="center">{setting.name}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
-      <Slider />
-      <BannerSection1/>
-      <BannerSection2/>
-      <BannerSection3/>
-      <OurStory/>
-      <BannerSectionCTA/>
-      <ImagesMapping />
-      <Footer />
-</>
-      )}
-      {/* Define the Routes for your application */}
-      <Routes>
-      <Route path="/headerHome" element={<HeaderBar />} />
-        <Route path="/menuPage" element={<menuPage />} />
-        <Route path="/banquetPage" element={<Banquet />} />
-        <Route path="/orderPage" element={<Order />} />
-        <Route path="/cateringPage" element={Catering} />
-        <Route path="/galleryPage" element={<Gallery />} />
-        <Route path="/locationPage" element={Location} />
-        {/* Add other routes here */}
-      </Routes>
-
-      
-    </div>
+                    {pages.map((page) => (
+                      <Button
+                        key={page}
+                        onClick={() => handleCloseNavMenu(page)}
+                        sx={{
+                          my: 2,
+                          color: activePage === page ? "red" : "white",
+                          display: "block",
+                          fontSize: "14px",
+                          lineHeight: "50px",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.03em",
+                          textDecoration: "none",
+                          fontWeight: 600,
+                          "&:hover": {
+                            color: "#b99272",
+                          },
+                        }}
+                      >
+                        {page}
+                      </Button>
+                    ))}
+                  </Box>
+                  <RouterLink
+                    to="/cart" // Update to your route
+                    className="btn-epic"
+                    style={{ width: "12%" }}
+                  >
+                    <div>
+                      <span>ORDER NOW</span>
+                      <span>ORDER NOW</span>
+                    </div>
+                  </RouterLink>
+                  <Box sx={{ flexGrow: 0, ml: "20px" }}>
+                    <Tooltip title="Open settings">
+                      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                        {userData && (
+                          <Typography sx={{ color: "white", marginRight: 1 }}>
+                            {userData.firstName}
+                          </Typography>
+                        )}
+                        <Avatar alt={userData ? userData.firstName : ""} />
+                      </IconButton>
+                    </Tooltip>
+                    <Menu
+                      sx={{ mt: "68px" }}
+                      id="menu-appbar"
+                      anchorEl={anchorElUser}
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      open={Boolean(anchorElUser)}
+                      onClose={handleCloseUserMenu}
+                    >
+                      {settings.map((setting) => (
+                        <MenuItem
+                          key={setting.name}
+                          onClick={() => {
+                            handleCloseUserMenu();
+                            if (setting.name === "Logout") {
+                              logOut();
+                            }
+                            if (setting.name === "Profile") {
+                              UserProfile();
+                            }
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            icon={setting.icon}
+                            style={{ marginRight: "10px" }}
+                          />
+                          <Typography textAlign="center">
+                            {setting.name}
+                          </Typography>
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+                </Toolbar>
+              </Container>
+            </AppBar>
+            <Slider setLoading={setLoading}/>
+            <BannerSection1 setLoading={setLoading}/>
+           <BannerSection2 setLoading={setLoading}/> 
+             <BannerSection3 setLoading={setLoading}/>
+            <OurStory setLoading={setLoading}/>
+            <BannerSectionCTA setLoading={setLoading}/>
+            <ImagesMapping setLoading={setLoading}/>
+            <Footer setLoading={setLoading}/> 
+          </>
+        )}
+        {/* Define the Routes for your application */}
+        <Routes>
+          <Route path="/headerHome" element={<HeaderBar />} />
+          <Route path="/menuPage" element={<menuPage />} />
+          <Route path="/banquetPage" element={<Banquet />} />
+          <Route path="/orderPage" element={<Order />} />
+          <Route path="/cateringPage" element={Catering} />
+          <Route path="/galleryPage" element={<Gallery />} />
+          <Route path="/locationPage" element={Location} />
+          {/* Add other routes here */}
+        </Routes>
+      </div>
+    </>
   );
 }
 

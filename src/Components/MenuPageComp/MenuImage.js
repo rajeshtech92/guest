@@ -20,16 +20,16 @@ import TextField from "@mui/material/TextField";
 
 function MenuImage() {
   const [activeLink, setActiveLink] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [menuData, setMenuData] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   const [submenuPrices, setSubmenuPrices] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // Search query state
   const [page, setPage] = useState(0); // For pagination
   const [rowsPerPage, setRowsPerPage] = useState(5); // Rows per page for pagination
-
+  const [loading, setLoading] = useState(true);
   // Fetch menu data from the API
   useEffect(() => {
+    setLoading(true);
     axios
       .get(
         "https://guesthouse-api-dje8gvcwayfdfmbr.eastus-01.azurewebsites.net/api/Menu"
@@ -63,7 +63,8 @@ function MenuImage() {
           setMenuItems(filteredItems);
         })
         .catch((error) => {
-          console.error("Error fetching menu items:", error);
+          console.error("Error fetching menu data:", error);
+          setLoading(false);
         });
 
       // Fetch submenu prices
@@ -78,7 +79,8 @@ function MenuImage() {
           setSubmenuPrices(filteredPrices);
         })
         .catch((error) => {
-          console.error("Error fetching submenu prices:", error);
+          console.error("Error fetching menu data:", error);
+          setLoading(false);
         });
     }
   }, [activeLink]);
@@ -173,209 +175,204 @@ function MenuImage() {
                     </div>
 
                     {/* Table */}
-                    <TableContainer
-                      component={Paper}
-                      style={{ background: "#333333", color: "white" }}
-                    >
-                      <Table
-                        style={{
-                          borderCollapse: "separate",
-                          borderSpacing: "0",
-                        }}
+                    <div className="card">
+                      <TableContainer
+                        // component={Paper}
+                        style={{ background: "#333333", color: "white" }}
                       >
-                        <TableHead style={{ background: "#1976d2" }}>
-                          <TableRow>
-                            <TableCell
-                              className="TableHead-color"
-                              style={{
-                                borderRight: "2px solid white",
-                                color: "white",
-                                fontWeight: "bold",
-                                padding: "10px",
-                                textAlign: "center",
-                              }}
-                            >
-                              S No
-                            </TableCell>
-                            <TableCell
-                              className="TableHead-color"
-                              style={{
-                                borderRight: "2px solid white",
-                                color: "white",
-                                fontWeight: "bold",
-                                padding: "10px",
-                                textAlign: "center",
-                              }}
-                            >
-                              Menu Item
-                            </TableCell>
-                            <TableCell
-                              className="TableHead-color"
-                              style={{
-                                borderRight: "2px solid white",
-                                color: "white",
-                                fontWeight: "bold",
-                                padding: "10px",
-                                textAlign: "center",
-                              }}
-                            >
-                              Description
-                            </TableCell>
-                            <TableCell
-                              className="TableHead-color"
-                              style={{
-                                borderRight: "2px solid white",
-                                color: "white",
-                                fontWeight: "bold",
-                                padding: "10px",
-                                textAlign: "center",
-                              }}
-                            >
-                              Quantity
-                            </TableCell>
-                            <TableCell
-                              className="TableHead-color"
-                              style={{
-                                color: "white",
-                                fontWeight: "bold",
-                                padding: "10px",
-                                textAlign: "center",
-                              }}
-                            >
-                              Price
-                            </TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {filteredItems
-                            .slice(
-                              page * rowsPerPage,
-                              page * rowsPerPage + rowsPerPage
-                            )
-                            .map((item, index) => {
-                              const priceData = submenuPrices.find(
-                                (price) => price.menuItemId === item.menuItemId
-                              );
-                              const isEvenRow = index % 2 === 0;
-                              return (
-                                <TableRow
-                                  key={item.menuItemId}
-                                  style={{
-                                    background: isEvenRow
-                                      ? "#f5f5f5"
-                                      : "#e0e0e0",
-                                    transition: "background 0.3s",
-                                    cursor: "pointer",
-                                  }}
-                                  onMouseEnter={(e) =>
-                                    (e.currentTarget.style.background =
-                                      "#d3d3d3")
-                                  }
-                                  onMouseLeave={(e) =>
-                                    (e.currentTarget.style.background =
-                                      isEvenRow ? "#f5f5f5" : "#e0e0e0")
-                                  }
-                                >
-                                  <TableCell
-                                    component="th"
-                                    scope="row"
+                        <Table
+                        // style={{
+                        //   borderCollapse: "separate",
+                        //   borderSpacing: "0",
+                        // }}
+                        >
+                          <TableHead style={{ background: "white" }}>
+                            <TableRow>
+                              <TableCell
+                                className="TableHead-color"
+                                style={{
+                                  borderRight: "2px solid white",
+                                  color: "#000000ad",
+                                  fontWeight: "bold",
+                                  padding: "10px",
+                                  textAlign: "center",
+                                }}
+                              >
+                                S No
+                              </TableCell>
+                              <TableCell
+                                className="TableHead-color"
+                                style={{
+                                  borderRight: "2px solid white",
+                                  color: "#000000ad",
+                                  fontWeight: "bold",
+                                  padding: "10px",
+                                  textAlign: "center",
+                                }}
+                              >
+                                Menu Item
+                              </TableCell>
+                              <TableCell
+                                className="TableHead-color"
+                                style={{
+                                  borderRight: "2px solid white",
+                                  color: "#000000ad",
+                                  fontWeight: "bold",
+                                  padding: "10px",
+                                  textAlign: "center",
+                                }}
+                              >
+                                Description
+                              </TableCell>
+                              <TableCell
+                                className="TableHead-color"
+                                style={{
+                                  borderRight: "2px solid white",
+                                  color: "#000000ad",
+                                  fontWeight: "bold",
+                                  padding: "10px",
+                                  textAlign: "center",
+                                }}
+                              >
+                                Quantity
+                              </TableCell>
+                              <TableCell
+                                className="TableHead-color"
+                                style={{
+                                  color: "#000000ad",
+                                  fontWeight: "bold",
+                                  padding: "10px",
+                                  textAlign: "center",
+                                }}
+                              >
+                                Price
+                              </TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            {filteredItems
+                              .reverse() // Reverse the array to show newly added data first
+                              .slice(
+                                page * rowsPerPage,
+                                page * rowsPerPage + rowsPerPage
+                              )
+                              .map((item, index) => {
+                                const priceData = submenuPrices.find(
+                                  (price) =>
+                                    price.menuItemId === item.menuItemId
+                                );
+                                const isEvenRow = index % 2 === 0;
+                                return (
+                                  <TableRow
+                                    key={item.menuItemId}
                                     style={{
-                                      color: "#333",
-                                      borderRight: "1px solid #ddd",
-                                      padding: "10px",
-                                      textAlign: "center",
+                                      background: isEvenRow
+                                        ? "#f5f5f5"
+                                        : "#e0e0e0",
+                                      transition: "background 0.3s",
+                                      cursor: "pointer",
                                     }}
+                                    onMouseEnter={(e) =>
+                                      (e.currentTarget.style.background =
+                                        "#d3d3d3")
+                                    }
+                                    onMouseLeave={(e) =>
+                                      (e.currentTarget.style.background =
+                                        isEvenRow ? "#f5f5f5" : "#e0e0e0")
+                                    }
                                   >
-                                    {index + 1}
-                                  </TableCell>
-                                  <TableCell
-                                    component="th"
-                                    scope="row"
-                                    style={{
-                                      color: "#333",
-                                      borderRight: "1px solid #ddd",
-                                      padding: "10px",
-                                      textAlign: "center",
-                                    }}
-                                  >
-                                    {item.menuItemName}
-                                  </TableCell>
-                                  <TableCell
-                                    style={{
-                                      color: "#333",
-                                      borderRight: "1px solid #ddd",
-                                      padding: "10px",
-                                      textAlign: "center",
-                                    }}
-                                  >
-                                    {item.menuDesc}
-                                  </TableCell>
-                                  <TableCell
-                                    style={{
-                                      color: "#333",
-                                      borderRight: "1px solid #ddd",
-                                      padding: "10px",
-                                      textAlign: "center",
-                                    }}
-                                  >
-                                    {priceData ? priceData.quantity : "N/A"}
-                                  </TableCell>
-                                  <TableCell
-                                    style={{
-                                      color: "#333",
-                                      padding: "10px",
-                                      textAlign: "center",
-                                    }}
-                                  >
-                                    {priceData ? priceData.price : "N/A"}
-                                  </TableCell>
-                                </TableRow>
-                              );
-                            })}
-                        </TableBody>
-                      </Table>
+                                    <TableCell
+                                      style={{
+                                        textAlign: "center",
+                                        padding: "10px",
+                                      }}
+                                    >
+                                      {page * rowsPerPage + index + 1}
+                                    </TableCell>
+                                    <TableCell
+                                      style={{
+                                        textAlign: "center",
+                                        padding: "10px",
+                                      }}
+                                    >
+                                      {item.menuItemName}
+                                    </TableCell>
+                                    <TableCell
+                                      style={{
+                                        textAlign: "center",
+                                        padding: "10px",
+                                      }}
+                                    >
+                                      {item.menuDesc}
+                                    </TableCell>
+                                    <TableCell
+                                      style={{
+                                        textAlign: "center",
+                                        padding: "10px",
+                                      }}
+                                    >
+                                      {priceData ? priceData.quantity : "N/A"}
+                                    </TableCell>
+                                    <TableCell
+                                      style={{
+                                        textAlign: "center",
+                                        padding: "10px",
+                                      }}
+                                    >
+                                      {priceData ? priceData.price : "N/A"}
+                                    </TableCell>
+                                  </TableRow>
+                                );
+                              })}
+                          </TableBody>
+                        </Table>
 
-                      <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
-                        component="div"
-                        count={filteredItems.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                        style={{
-                          backgroundColor: "#ddd", // Blue background to match the table head
-                          color: "black", // White text color for contrast
-                          borderTop: "1px solid #ddd", // Border at the top
-                          display: "flex", // Flexbox layout for alignment
-                          justifyContent:"end", // Even spacing for elements
-                        }}
-                        classes={{
-                          actions: {
-                            color: "black" // White icons for page navigation
-                          },
-                        }}
-                        labelRowsPerPage={
-                          <span style={{ color: "black"}}>Rows per page:</span>
-                        }
-                        labelDisplayedRows={({ from, to, count }) => (
-                          <span style={{ color: "black"}}>
-                            {from}-{to} of{" "}
-                            {count !== -1 ? count : `more than ${to}`}
-                          </span>
-                        )}
-                      />
-                    </TableContainer>
+                        <TablePagination
+                          rowsPerPageOptions={[5, 10, 25]}
+                          component="div"
+                          count={filteredItems.length}
+                          rowsPerPage={rowsPerPage}
+                          page={page}
+                          onPageChange={handleChangePage}
+                          onRowsPerPageChange={handleChangeRowsPerPage}
+                          style={{
+                            backgroundColor: "#ddd", // Blue background to match the table head
+                            color: "black", // White text color for contrast
+                            borderTop: "1px solid #ddd", // Border at the top
+                            display: "flex", // Flexbox layout for alignment
+                            justifyContent: "end", // Even spacing for elements
+                          }}
+                          classes={{
+                            actions: {
+                              color: "black", // White icons for page navigation
+                            },
+                          }}
+                          labelRowsPerPage={
+                            <span style={{ color: "black" }}>
+                              Rows per page:
+                            </span>
+                          }
+                          labelDisplayedRows={({ from, to, count }) => (
+                            <span style={{ color: "black" }}>
+                              {from}-{to} of{" "}
+                              {count !== -1 ? count : `more than ${to}`}
+                            </span>
+                          )}
+                        />
+                      </TableContainer>
+                    </div>
                   </>
                 ) : (
-                  <p style={{ color: "white", textAlign:"center" }}>No menu items available.</p>
+                  <p style={{ color: "white", textAlign: "center" }}>
+                    No menu items available.
+                  </p>
                 )}
               </div>
             </div>
           </section>
 
-          <BannerSection2 />
-          <Footer />
+          <BannerSection2 setLoading={setLoading} />
+          <Footer setLoading={setLoading} />
         </>
       )}
     </div>

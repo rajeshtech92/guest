@@ -1,30 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Box} from '@mui/material';
 import axios from 'axios';
-import InstagramIcon from '@mui/icons-material/Instagram'; // Ensure you have this icon from MUI or use any other icon source
+import InstagramIcon from '@mui/icons-material/Instagram'; 
 import './ImagesMapping.css'
 
 function ImagesMapping() {
   const [images, setImages] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetching images from the API
-    axios.get('https://guesthouse-api-dje8gvcwayfdfmbr.eastus-01.azurewebsites.net/api/Contents')
-      .then(response => {
-        // Filtering images based on contentId (e.g., contentId 23, 24, 25, 26)
-        const filteredImages = response.data.filter(image => 
-          [23, 24, 25, 26].includes(image.contentId)
-        );
-        setImages(filteredImages);
-        console.log(response);
-      })
-      .catch(error => {
-        console.error("There was an error fetching the images!", error);
-      });
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        // Check if data is in local storage
+        const cachedImages = localStorage.getItem('images');
+        if (cachedImages) {
+          // If data is found in local storage, use it
+          setImages(JSON.parse(cachedImages));
+        } else {
+          // If no data in local storage, fetch from API
+          const response = await axios.get(
+            'https://guesthouse-api-dje8gvcwayfdfmbr.eastus-01.azurewebsites.net/api/Contents'
+          );
+          const filteredImages = response.data.filter((image) =>
+            [23, 24, 25, 26].includes(image.contentId)
+          );
+          
+          // Save the fetched data to local storage
+          localStorage.setItem('images', JSON.stringify(filteredImages));
+          
+          setImages(filteredImages);
+        }
+      } catch (error) {
+        console.error('There was an error fetching the images!', error);
+      } finally {
+        setLoading(false); // Stop loader regardless of success or error
+      }
+    };
+
+    fetchData(); // Call the fetch function
   }, []);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   const handleOpen = (image) => {
     setSelectedImage(image);
     setOpen(true);
@@ -89,6 +111,7 @@ function ImagesMapping() {
           </Grid>
         ))}
       </Grid>
+    {/* )} */}
     </div>
   );
 }

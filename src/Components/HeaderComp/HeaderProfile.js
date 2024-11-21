@@ -80,7 +80,7 @@ function HeaderProfile() {
 
   const logOut = () => {
     localStorage.clear("items");
-    navigate("/login");
+    navigate("/");
   };
 
   const UserProfile = () => {
