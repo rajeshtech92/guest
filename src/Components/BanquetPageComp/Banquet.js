@@ -9,6 +9,8 @@ import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import logo from "../ImageCom/logo.jpg"; // Make sure to replace this with the correct path to your logo image
 import BannerSection2 from "../HomePageComp/BannerSection2";
+import { DataGrid } from '@mui/x-data-grid';
+import Paper from '@mui/material/Paper';
 
 const Banquet = () => {
   const navigate = useNavigate();
@@ -22,7 +24,10 @@ const Banquet = () => {
   const [img, setImage] = useState([]);
   const [text3, setText3] = useState("");
   const [loading, setLoading] = useState(true); // Added loading state
-
+  const [rows, setRows] = useState([]);
+  const [menuItems, setMenuItems] = useState([]);
+  const [submenuPrices, setSubmenuPrices] = useState([]);
+ 
   useEffect(() => {
     const fetchContent = async () => {
       try {
@@ -102,6 +107,34 @@ const Banquet = () => {
         if (filteredText1) setText1(filteredText1.contentData);
         if (filteredHeading2) setHeading2(filteredHeading2.contentData);
         if (filteredText2) setText2(filteredText2.contentData);
+        const menuResponse = await axios.get(
+          "https://guesthouse-api-dje8gvcwayfdfmbr.eastus-01.azurewebsites.net/api/MenuItem"
+        );
+  
+        // Fetch SubmenuPrice data
+        const submenuResponse = await axios.get(
+          "https://guesthouse-api-dje8gvcwayfdfmbr.eastus-01.azurewebsites.net/api/SubmenuPrice"
+        );
+  
+        const menuData = menuResponse.data;
+        const submenuData = submenuResponse.data;
+  
+        // Combine MenuItem and SubmenuPrice data
+        const combinedData = menuData.map((item, index) => {
+          const priceData = submenuData.find(
+            (price) =>
+              price.menuItemId === item.menuItemId
+          );
+          return {
+            id: index + 1,
+            menuItemName: item.menuItemName || "N/A",
+            menuDesc: item.menuDesc || "N/A",
+            quantity: priceData?.quantity || "N/A",
+            price: priceData?.price || "N/A",
+          };
+        });
+        setRows(combinedData);
+        
       } catch (error) {
         console.error("Error fetching content:", error);
       } finally {
@@ -111,11 +144,17 @@ const Banquet = () => {
 
     fetchContent();
   }, []);
-
+  const columns = [
+    { field: "id", headerName: "Id", flex: 0.5 },
+    { field: "menuItemName", headerName: "Menu Item Name", flex: 1 },
+    { field: "menuDesc", headerName: "Description", flex: 1 },
+    { field: "quantity", headerName: "Quantity", flex: 0.5 },
+    { field: "price", headerName: "Price", flex: 0.5 },
+  ];
   const onHome = () => {
     navigate("/headerHome");
   };
-
+ 
   return (
     <div className="banquet-bg">
       {loading ? (
@@ -175,7 +214,6 @@ const Banquet = () => {
                 </div>
               </Typography>
             </Grid>
-
             <Grid container spacing={0} className="banquet-content">
               <Grid item xs={7}>
                 <Typography variant="body1" className="banquet-text1">
@@ -212,21 +250,24 @@ const Banquet = () => {
                 </Typography>
               </Grid>
             </Grid>
-            {/* <div className="image-grid">
-                        {img.map((image, index) => (
-                            <div key={index} className="grid-images">
-                                <img
-                                    src={`data:image/jpeg;base64,${image.contentData}`}
-                                    alt={image.title}
-                                />
-                                <Typography>
-                                    <h3>{image.title}</h3>
-                                    <p>{image.description}</p>
-                                </Typography>
-                            </div>
-                        ))}
-                    </div> */}
           </Grid>
+          <h4 style={{color:"white", marginLeft:"15px", marginBottom:"50px"}}>Our Food items</h4>
+          <Grid container spacing={2} style={{background:"white"}}>
+            
+              <div style={{ height: 400, width: "100%", marginLeft:"16px"}}>
+                <DataGrid
+                  rows={rows}
+                  columns={columns}
+                  pageSize={5}
+                  rowsPerPageOptions={[10, 30, 50]}
+                  disableSelectionOnClick
+                  density="compact"
+                />
+              </div>
+            </Grid>
+        
+
+
           <BannerSection2 setLoading={setLoading}></BannerSection2>
           <Footer setLoading={setLoading}/>
         </>

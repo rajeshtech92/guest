@@ -98,7 +98,7 @@
   }
   
   .grid-images img {
-    width: 100%;
+    width: 119%;
     height: 100%;
     object-fit: cover; /* Ensures image covers the container while maintaining aspect ratio */
     transition: transform 0.5s ease; /* Smooth zoom effect on hover */

@@ -27,6 +27,7 @@ function MenuImage() {
   const [page, setPage] = useState(0); // For pagination
   const [rowsPerPage, setRowsPerPage] = useState(5); // Rows per page for pagination
   const [loading, setLoading] = useState(true);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   // Fetch menu data from the API
   useEffect(() => {
     setLoading(true);
@@ -104,6 +105,29 @@ function MenuImage() {
   const filteredItems = menuItems.filter((item) =>
     item.menuItemName.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const handleSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    console.log(`Sorting by ${key}, direction: ${direction}`);
+    setSortConfig({ key, direction });
+  };
+
+  const sortedItems = [...filteredItems].sort((a, b) => {
+    if (!sortConfig.key) return 0; // No sorting if no key is selected
+    const valueA = typeof a[sortConfig.key] === "string" 
+      ? a[sortConfig.key].toLowerCase() 
+      : a[sortConfig.key];
+    const valueB = typeof b[sortConfig.key] === "string" 
+      ? b[sortConfig.key].toLowerCase() 
+      : b[sortConfig.key];
+  
+    if (valueA < valueB) return sortConfig.direction === "asc" ? -1 : 1;
+    if (valueA > valueB) return sortConfig.direction === "asc" ? 1 : -1;
+    return 0;
+  });
+  
 
   return (
     <div className="menu-bg">
@@ -180,78 +204,91 @@ function MenuImage() {
                         // component={Paper}
                         style={{ background: "#333333", color: "white" }}
                       >
-                        <Table
-                        // style={{
-                        //   borderCollapse: "separate",
-                        //   borderSpacing: "0",
-                        // }}
-                        >
+                        <Table>
                           <TableHead style={{ background: "white" }}>
                             <TableRow>
                               <TableCell
                                 className="TableHead-color"
                                 style={{
-                                  borderRight: "2px solid white",
+                                 
                                   color: "#000000ad",
                                   fontWeight: "bold",
-                                  padding: "10px",
+                                  padding: "5px", // Reduced padding
+                                  fontSize: "14px", // Smaller font size
                                   textAlign: "center",
                                 }}
                               >
                                 S No
                               </TableCell>
-                              <TableCell
+                              <TableCell onClick={() => handleSort("menuItemName")}
                                 className="TableHead-color"
                                 style={{
-                                  borderRight: "2px solid white",
+                                
                                   color: "#000000ad",
                                   fontWeight: "bold",
-                                  padding: "10px",
+                                  padding: "5px", // Reduced padding
+                                  fontSize: "14px", // Smaller font size
                                   textAlign: "center",
+                                  cursor:"pointer",
+
                                 }}
                               >
                                 Menu Item
+                                {sortConfig.key === "menuItemName" &&
+                                  (sortConfig.direction === "asc" ? " ↑" : " ↓")}
                               </TableCell>
-                              <TableCell
+                              <TableCell  onClick={() => handleSort("menuDesc")}
                                 className="TableHead-color"
                                 style={{
-                                  borderRight: "2px solid white",
+                                 
                                   color: "#000000ad",
                                   fontWeight: "bold",
-                                  padding: "10px",
+                                  padding: "5px", // Reduced padding
+                                  fontSize: "14px", // Smaller font size
                                   textAlign: "center",
+                                  cursor:"pointer"
                                 }}
                               >
                                 Description
+                                {sortConfig.key === "menuDesc" &&
+                                  (sortConfig.direction === "asc" ? " ↑" : " ↓")}
                               </TableCell>
-                              <TableCell
+                              <TableCell onClick={() => handleSort("quantity")}
                                 className="TableHead-color"
                                 style={{
-                                  borderRight: "2px solid white",
+                                 
                                   color: "#000000ad",
                                   fontWeight: "bold",
-                                  padding: "10px",
+                                  padding: "5px", // Reduced padding
+                                  fontSize: "14px", // Smaller font size
                                   textAlign: "center",
+                                  cursor:"pointer"
                                 }}
                               >
                                 Quantity
+                                {sortConfig.key === "quantity" &&
+                                  (sortConfig.direction === "asc" ? " ↑" : " ↓")}
                               </TableCell>
-                              <TableCell
+                              <TableCell onClick={() => handleSort("price")}
                                 className="TableHead-color"
                                 style={{
                                   color: "#000000ad",
                                   fontWeight: "bold",
-                                  padding: "10px",
+                                  padding: "5px", // Reduced padding
+                                  fontSize: "14px", // Smaller font size
                                   textAlign: "center",
+                                  cursor:"pointer"
                                 }}
                               >
                                 Price
+                                {sortConfig.key === "price" &&
+                                  (sortConfig.direction === "asc" ? " ↑" : " ↓")}
                               </TableCell>
                             </TableRow>
                           </TableHead>
                           <TableBody>
-                            {filteredItems
-                              .reverse() // Reverse the array to show newly added data first
+                            {sortedItems
+                              .reverse()
                               .slice(
                                 page * rowsPerPage,
                                 page * rowsPerPage + rowsPerPage
@@ -267,9 +304,8 @@ function MenuImage() {
                                     key={item.menuItemId}
                                     style={{
                                       background: isEvenRow
-                                        ? "#f5f5f5"
-                                        : "#e0e0e0",
-                                      transition: "background 0.3s",
+                                        ? "#fff"
+                                        : "#f4f4f4",
                                       cursor: "pointer",
                                     }}
                                     onMouseEnter={(e) =>
@@ -278,13 +314,15 @@ function MenuImage() {
                                     }
                                     onMouseLeave={(e) =>
                                       (e.currentTarget.style.background =
-                                        isEvenRow ? "#f5f5f5" : "#e0e0e0")
+                                        isEvenRow ? "#f4f4f4" : "#fcfcfc")
                                     }
                                   >
                                     <TableCell
                                       style={{
                                         textAlign: "center",
-                                        padding: "10px",
+                                        padding: "5px", // Reduced padding
+                                        fontSize: "14px", // Smaller font size
+                                        height:"35px"
                                       }}
                                     >
                                       {page * rowsPerPage + index + 1}
@@ -292,7 +330,8 @@ function MenuImage() {
                                     <TableCell
                                       style={{
                                         textAlign: "center",
-                                        padding: "10px",
+                                        padding: "5px", // Reduced padding
+                                        fontSize: "14px", // Smaller font size
                                       }}
                                     >
                                       {item.menuItemName}
@@ -300,7 +339,8 @@ function MenuImage() {
                                     <TableCell
                                       style={{
                                         textAlign: "center",
-                                        padding: "10px",
+                                        padding: "5px", // Reduced padding
+                                        fontSize: "14px", // Smaller font size
                                       }}
                                     >
                                       {item.menuDesc}
@@ -308,7 +348,8 @@ function MenuImage() {
                                     <TableCell
                                       style={{
                                         textAlign: "center",
-                                        padding: "10px",
+                                        padding: "5px", // Reduced padding
+                                        fontSize: "14px", // Smaller font size
                                       }}
                                     >
                                       {priceData ? priceData.quantity : "N/A"}
@@ -316,7 +357,8 @@ function MenuImage() {
                                     <TableCell
                                       style={{
                                         textAlign: "center",
-                                        padding: "10px",
+                                        padding: "5px", // Reduced padding
+                                        fontSize: "14px", // Smaller font size
                                       }}
                                     >
                                       {priceData ? priceData.price : "N/A"}
@@ -326,40 +368,37 @@ function MenuImage() {
                               })}
                           </TableBody>
                         </Table>
-
-                        <TablePagination
-                          rowsPerPageOptions={[5, 10, 25]}
-                          component="div"
-                          count={filteredItems.length}
-                          rowsPerPage={rowsPerPage}
-                          page={page}
-                          onPageChange={handleChangePage}
-                          onRowsPerPageChange={handleChangeRowsPerPage}
-                          style={{
-                            backgroundColor: "#ddd", // Blue background to match the table head
-                            color: "black", // White text color for contrast
-                            borderTop: "1px solid #ddd", // Border at the top
-                            display: "flex", // Flexbox layout for alignment
-                            justifyContent: "end", // Even spacing for elements
-                          }}
-                          classes={{
-                            actions: {
-                              color: "black", // White icons for page navigation
-                            },
-                          }}
-                          labelRowsPerPage={
-                            <span style={{ color: "black" }}>
-                              Rows per page:
-                            </span>
-                          }
-                          labelDisplayedRows={({ from, to, count }) => (
-                            <span style={{ color: "black" }}>
-                              {from}-{to} of{" "}
-                              {count !== -1 ? count : `more than ${to}`}
-                            </span>
-                          )}
-                        />
                       </TableContainer>
+                      <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={filteredItems.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        style={{
+                          backgroundColor: "rgb(221, 221, 221);", // Blue background to match the table head
+                          color: "black", // White text color for contrast
+                          borderTop: "1px solid #ddd", // Border at the top
+                          display: "flex", // Flexbox layout for alignment
+                          justifyContent: "end", // Even spacing for elements
+                        }}
+                        classes={{
+                          actions: {
+                            color: "black", // White icons for page navigation
+                          },
+                        }}
+                        labelRowsPerPage={
+                          <span style={{ color: "black" }}>Rows per page:</span>
+                        }
+                        labelDisplayedRows={({ from, to, count }) => (
+                          <span style={{ color: "black" }}>
+                            {from}-{to} of{" "}
+                            {count !== -1 ? count : `more than ${to}`}
+                          </span>
+                        )}
+                      />
                     </div>
                   </>
                 ) : (
@@ -370,7 +409,7 @@ function MenuImage() {
               </div>
             </div>
           </section>
-
+          <h4 style={{color:"white", marginLeft:"33px", marginBottom:"50px"}}>Our Food items</h4>
           <BannerSection2 setLoading={setLoading} />
           <Footer setLoading={setLoading} />
         </>

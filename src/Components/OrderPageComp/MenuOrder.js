@@ -156,7 +156,8 @@ const MenuOrder = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [gstRate, setGstRate] = useState(0.05); // 5% GST
   const [orderDate, setOrderDate] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
+  const [filterType, setFilterType] = useState("all");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -191,7 +192,6 @@ const MenuOrder = () => {
     fetchData();
   }, []);
 
-  
   const mergedData = useMemo(() => {
     return orders
       .slice()
@@ -205,12 +205,64 @@ const MenuOrder = () => {
           quantity: order.quantity || ItemQuantity.Full,
           price: order.price || "0",
           orderStatus: order.quantity || OrderStatus.Pending,
-          orderCreateDate: orderDate[index],
+          orderCreateDate: orderDate[index] || order.orderCreateDate,
           menuItemName: menuItem.menuItemName || "Unknown Item",
         };
       });
   }, [orders, menuItems, orderDate]);
+  const filteredData = useMemo(() => {
+    let data = [...mergedData];
 
+    const today = new Date();
+    const todayStart = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
+    const todayEnd = new Date(todayStart);
+    todayEnd.setDate(todayEnd.getDate() + 1);
+
+    const yesterdayStart = new Date(todayStart);
+    yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+    const yesterdayEnd = todayStart;
+
+    // Apply filtering logic
+    if (filterType === "new") {
+      // Filter for today's data
+      data = data.filter(
+        (order) =>
+          new Date(order.orderCreateDate) >= todayStart &&
+          new Date(order.orderCreateDate) < todayEnd
+      );
+    } else if (filterType === "old") {
+      // Filter for yesterday's data
+      data = data.filter(
+        (order) =>
+          new Date(order.orderCreateDate) >= yesterdayStart &&
+          new Date(order.orderCreateDate) < yesterdayEnd
+      );
+    }
+
+    // Apply search query
+    if (searchQuery) {
+      const lowerQuery = searchQuery.toLowerCase();
+      data = data.filter((order) => {
+        const orderID = order.orderID?.toString()?.toLowerCase() || "";
+        const menuItemName = order.menuItemName?.toLowerCase() || "";
+        const itemTotal = order.itemTotal?.toString()?.toLowerCase() || "";
+        const quantity = order.quantity?.toString()?.toLowerCase() || "";
+
+        return (
+          orderID.includes(lowerQuery) ||
+          menuItemName.includes(lowerQuery) ||
+          itemTotal.includes(lowerQuery) ||
+          quantity.includes(lowerQuery)
+        );
+      });
+    }
+
+    return data;
+  }, [searchQuery, filterType, mergedData]);
   const handleRowClick = (order) => {
     // Find the menuItem for the selected order
     const menuItem = menuItems.find(
@@ -226,38 +278,43 @@ const MenuOrder = () => {
     setOpenModal(true);
   };
 
-  const filteredData = useMemo(() => {
-    if (!searchQuery) return mergedData;
+  // const filteredData = useMemo(() => {
+  //   if (!searchQuery) return mergedData;
 
-    return mergedData.filter((order) => {
-      const lowerQuery = searchQuery.toLowerCase();
+  //   return mergedData.filter((order) => {
+  //     const lowerQuery = searchQuery.toLowerCase();
 
-      // Check if orderStatus and quantity are defined
-      const orderStatusInfo = getStatusLabel(
-        order.orderStatus || OrderStatus.Pending,
-        order.quantity || ItemQuantity.Full
-      );
-      const orderStatusLabel = orderStatusInfo.label
-        ? orderStatusInfo.label.toLowerCase()
-        : ""; // Safely access label
-      const orderID = order.orderID?.toString()?.toLowerCase() || ""; // Safe access
-      const menuItemName = order.menuItemName?.toLowerCase() || ""; // Safe access
-      const price = order.price?.toString()?.toLowerCase() || ""; // Safe access
+  //     const orderStatusInfo = getStatusLabel(
+  //       order.orderStatus || OrderStatus.Pending,
+  //       order.units || ItemQuantity.Full
+  //     );
+  //     const orderStatusLabel = orderStatusInfo.label
+  //       ? orderStatusInfo.label.toLowerCase()
+  //       : "";
+  //     const orderID = order.orderID?.toString()?.toLowerCase() || "";
+  //     const menuItemName = order.menuItemName?.toLowerCase() || "";
+  //     const itemTotal = order.itemTotal?.toString()?.toLowerCase() || "";
+  //     const quantity = order.quantity?.toString()?.toLowerCase() || "";
 
-      return (
-        orderID.includes(lowerQuery) ||
-        menuItemName.includes(lowerQuery) ||
-        price.includes(lowerQuery) ||
-        orderStatusLabel.includes(lowerQuery)
-      );
-    });
-  }, [searchQuery, mergedData]);
+  //     return (
+  //       orderID.includes(lowerQuery) ||
+  //       menuItemName.includes(lowerQuery) ||
+  //       itemTotal.includes(lowerQuery) ||
+  //       orderStatusLabel.includes(lowerQuery) ||
+  //       quantity.includes(lowerQuery)
+  //     );
+  //   });
+  // }, [searchQuery, mergedData]);
 
   const columns = useMemo(
     () => [
       {
         Header: "order ID",
         accessor: "orderID",
+      },
+      {
+        Header: "menuItemName",
+        accessor: "menuItemName",
       },
       {
         Header: "Capacity",
@@ -272,15 +329,19 @@ const MenuOrder = () => {
           </StyledTableCell>
         ),
       },
+      // {
+      //   Header: "Quantity",
+      //   accessor: "quantity",
+      // },
       {
-        Header: "Quantity",
-        accessor: "quantity",
+        Header: "Units",
+        accessor: "units",
       },
       {
-        Header: "Price", // Correctly bind and display price here
+        Header: "Total", // Correctly bind and display price here
         Cell: ({ row }) => (
           <StyledTableCell>
-            ₹{parseFloat(row.original.price).toFixed(2)}{" "}
+            ₹{parseFloat(row.original.itemTotal).toFixed(2)}{" "}
             {/* Display price with 2 decimal places */}
           </StyledTableCell>
         ),
@@ -369,25 +430,25 @@ const MenuOrder = () => {
   if (loading) {
     return (
       <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        background:"#121212"
-      }}
-    >
-      <img
-        src={logo}
-        alt="Logo"
-        style={{ marginBottom: "10px", width: "150px", height: "150px" }}
-      />
-      {/* Display the logo */}
-      <Box sx={{ width: "110px", overflowX: "hidden" }}>
-        <LinearProgress color="success" style={{ height: "1px" }} />
-      </Box>
-    </div>
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          background: "#121212",
+        }}
+      >
+        <img
+          src={logo}
+          alt="Logo"
+          style={{ marginBottom: "10px", width: "150px", height: "150px" }}
+        />
+        {/* Display the logo */}
+        <Box sx={{ width: "110px", overflowX: "hidden" }}>
+          <LinearProgress color="success" style={{ height: "1px" }} />
+        </Box>
+      </div>
     );
   }
 
@@ -396,13 +457,19 @@ const MenuOrder = () => {
   }
 
   const calculateGrandTotal = () => {
-    const subtotal = filteredData.reduce((acc, row) => {
-      const price = row.price !== "N/A" ? parseFloat(row.price) : 0;
-      const gstAmount = price * gstRate;
-      return acc + price + gstAmount;
-    }, 0);
+    return filteredData.reduce((acc, row) => {
+      // Ensure valid price and units
+      const price =
+        row.price !== "N/A" && !isNaN(row.price) ? parseFloat(row.price) : 0;
+      const units = row.units && !isNaN(row.units) ? parseInt(row.units) : 0;
 
-    return subtotal;
+      // Calculate GST amount and subtotal
+      const itemTotal = price * units;
+      const gstAmount = itemTotal * gstRate;
+
+      // Add to accumulator
+      return acc + itemTotal + gstAmount;
+    }, 0);
   };
 
   const grandTotal = calculateGrandTotal();
@@ -411,22 +478,22 @@ const MenuOrder = () => {
     <>
       <HeaderProfile />
       <Paper sx={{ width: "100%", padding: 0.8 }}>
-      <Typography
-            variant="h4"
-            gutterBottom
-            className="order_online"
-            // style={{
-            //   fontSize: "1.5rem",
-            //   fontFamily: "sans-serif",
-            //   fontWeight: "600",
-            //   marginLeft: "20px",
-            //   marginTop:"8px",
+        <Typography
+          variant="h4"
+          gutterBottom
+          className="order_online"
+          // style={{
+          //   fontSize: "1.5rem",
+          //   fontFamily: "sans-serif",
+          //   fontWeight: "600",
+          //   marginLeft: "20px",
+          //   marginTop:"8px",
 
-            //   color: "#1976d2",
-            // }}
-          >
-            order online
-          </Typography>
+          //   color: "#1976d2",
+          // }}
+        >
+          order online
+        </Typography>
         <Box display="flex" alignItems="center" mb={1}>
           <TextField
             label="Search"
@@ -436,6 +503,28 @@ const MenuOrder = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{ marginLeft: "20px" }}
           />
+          <Box
+            display="flex"
+            alignItems="center"
+            mb={1}
+            style={{ marginLeft: "15px", marginTop: "8px" }}
+          >
+            <TextField
+              select
+              label="Search"
+              variant="outlined"
+              size="small"
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              SelectProps={{
+                native: true,
+              }}
+            >
+              <option value="all">All Orders</option>
+              <option value="new">New Orders</option>
+              <option value="old">Old Orders</option>
+            </TextField>
+          </Box>
           <Box ml="auto">
             {" "}
             {/* This box pushes the button to the right */}
@@ -447,7 +536,7 @@ const MenuOrder = () => {
                 height: "50px",
                 fontFamily: "sans-serif",
                 fontWeight: "600",
-                textTransform: "lowercase"
+                textTransform: "lowercase",
               }}
             >
               Order Item
@@ -524,6 +613,55 @@ const MenuOrder = () => {
             gotoPage(0);
           }}
         />
+        {/* <Box display="flex" alignItems="center" mb={2}>
+        <TextField
+          label="Search"
+          variant="outlined"
+          size="small"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ marginRight: "20px" }}
+        />
+        <TextField
+          select
+          label="Filter Orders"
+          value={filterType}
+          onChange={(e) => setFilterType(e.target.value)}
+          variant="outlined"
+          size="small"
+          SelectProps={{
+            native: true,
+          }}
+        >
+          <option value="all">All Orders</option>
+          <option value="new">New Orders</option>
+          <option value="old">Old Orders</option>
+        </TextField>
+      </Box>
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Menu Item Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Order Status</th>
+            <th>Order Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredData.map((order) => (
+            <tr key={order.orderItemID}>
+              <td>{order.orderID}</td>
+              <td>{order.menuItemName}</td>
+              <td>{order.units}</td>
+              <td>{order.itemTotal}</td>
+              <td>{order.orderStatus}</td>
+              <td>{new Date(order.orderCreateDate).toLocaleDateString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table> */}
 
         {/* Modal Dialog */}
         <Dialog open={openModal} onClose={handleCloseModal}>
@@ -547,10 +685,10 @@ const MenuOrder = () => {
                   </span>
                 </Typography>
                 <Typography variant="body1">
-                  Quantity: {selectedOrder.quantity}
+                  Units: {selectedOrder.units}
                 </Typography>
                 <Typography variant="body1">
-                  Price: {selectedOrder.price}
+                  Total: {selectedOrder.itemTotal}
                 </Typography>
                 <Typography variant="body1" style={{ marginBottom: "8px" }}>
                   Order Status:{" "}

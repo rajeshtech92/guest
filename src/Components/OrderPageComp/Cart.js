@@ -50,7 +50,7 @@ const Cart = () => {
   const [subMenuPrices, setSubMenuPrices] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState([]);
   const [inputRows, setInputRows] = useState([
-    { id: uuidv4(), menuItemId: "", unit: 1 },
+    { id: uuidv4(), menuItemId: "", units: 1 },
   ]);
   const [gstRate, setGstRate] = useState(0.05); // 5% GST
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -117,7 +117,7 @@ const Cart = () => {
           ...row,
           menuItemId,
           price: parseFloat(price),
-          quantity,
+          quantity:parseInt(quantity),
           // Keep quantity unchanged
         };
       }
@@ -140,14 +140,14 @@ const Cart = () => {
   const handleQuantityChange = (newQuantity, rowId) => {
     const updatedRows = inputRows.map((row) => {
       if (row.id === rowId) {
-        const unit = Math.max(newQuantity, 0); // Ensure the quantity doesn't go below 0
+        const units = Math.max(newQuantity, 0); // Ensure the quantity doesn't go below 0
         const totalPrice = parseFloat(row.price) * newQuantity; // Recalculate total price
         const gstRate = 0.05; // GST rate (5%)
         const gstAmount = totalPrice * gstRate; // Recalculate GST amount
         const grandTotal = totalPrice + gstAmount;
         return {
           ...row,
-          unit, // Update quantity
+          units, // Update quantity
           totalPrice, // Update total price
           gstAmount, // Update GST amount
           grandTotal,
@@ -160,7 +160,7 @@ const Cart = () => {
   };
 
   const handleAddRow = () => {
-    setInputRows([...inputRows, { id: uuidv4(), menuItemId: "", unit: 0 }]);
+    setInputRows([...inputRows, { id: uuidv4(), menuItemId: "", units: 0 }]);
   };
 
   const handleRemoveRow = (id) => {
@@ -174,8 +174,8 @@ const Cart = () => {
       (item) => item.menuItemId === row.menuItemId
     );
     const rowPrice = subMenuPrice ? subMenuPrice.price : 0;
-    const rowTotalPrice = rowPrice * row.unit;
-    const gstAmount = rowTotalPrice * gstRate;
+    const gstAmount = rowPrice * gstRate;
+    const rowTotalPrice = rowPrice * row.units + gstAmount;
 
     return {
       price: rowPrice,
@@ -183,6 +183,12 @@ const Cart = () => {
       gstAmount: gstAmount,
     };
   };
+  const calculateGST = (price, gstRate) => {
+    const gstAmount = price * gstRate;
+    const grandTotal = price + gstAmount;
+    return { gstAmount, grandTotal };
+  };
+  
   const handleAddToOrder = async () => {
     navigate("/menuOrder");
     const newOrderId = 0;
@@ -193,17 +199,20 @@ const Cart = () => {
 
     // Iterate over each menuId in selectedMenu
     selectedMenu.forEach((menuId, index) => {
-      // Create an order item for each row in inputRows
-      // Only use the first menuId for each menuItemId
       if (index < inputRows.length) {
-        const row = inputRows[index]; // Ensure you only access existing rows
+        const row = inputRows[index]; 
+        const { gstAmount } = calculateGST(row.totalPrice, gstRate);
         orderItems.push({
-          orderItemID: 0, // Adjust according to your API requirements
+          orderItemID: 0,
           orderID: newOrderId,
-          menuId: parseInt(menuId), // Current menuId from selectedMenu
+          menuId: parseInt(menuId), 
           menuItemId: parseInt(row.menuItemId),
           quantity: parseInt(row.quantity),
+          units:parseInt(row.units),
           price: parseFloat(row.price),
+          itemTotal: parseFloat(row.totalPrice),
+          gst: gstAmount.toFixed(2),
+
         });
       }
     });
@@ -252,8 +261,8 @@ const Cart = () => {
           itemQuantity: row.quantity,
           price: row.price,
           totalPrice: totals.totalPrice,
+          units:row.units,
           gstAmount: totals.gstAmount,
-          // Remove finalTotal
         });
       });
     } catch (error) {
@@ -329,7 +338,7 @@ const Cart = () => {
               <TableRow>
                 <TableCell className="texts-color">Sno</TableCell>
                 <TableCell className="texts-color">Menu Item</TableCell>
-                <TableCell className="texts-color">Unit</TableCell>
+                <TableCell className="texts-color">units</TableCell>
                 <TableCell className="texts-color">Price</TableCell>
                 <TableCell className="texts-color">Total</TableCell>
                 <TableCell className="texts-color">GST (5%)</TableCell>
@@ -394,22 +403,22 @@ const Cart = () => {
                           style={{
                             fontSize: 30,
                             cursor:
-                              row.unit <= 0 || !row.menuItemId
+                              row.units <= 0 || !row.menuItemId
                                 ? "not-allowed"
                                 : "pointer",
                           }}
                           onClick={() => {
-                            if (row.menuItemId && row.unit > 0) {
-                              handleQuantityChange(row.unit - 1, row.id);
+                            if (row.menuItemId && row.units > 0) {
+                              handleQuantityChange(row.units - 1, row.id);
                             }
                           }}
-                          color={row.unit <= 3 ? "#e53935" : "grey"}
-                          disabled={!row.menuItemId || row.unit <= 0}
+                          color={row.units <= 3 ? "#e53935" : "grey"}
+                          disabled={!row.menuItemId || row.units <= 0}
                         />
 
                         <input
                           type="text"
-                          value={row.unit}
+                          value={row.units}
                           readOnly
                           style={{
                             width: "50px",
@@ -428,17 +437,17 @@ const Cart = () => {
                           style={{
                             fontSize: 30,
                             cursor:
-                              row.unit >= 20 || !row.menuItemId
+                              row.units >= 20 || !row.menuItemId
                                 ? "not-allowed"
                                 : "pointer",
                           }}
                           onClick={() => {
-                            if (row.menuItemId && row.unit < 20) {
-                              handleQuantityChange(row.unit + 1, row.id);
+                            if (row.menuItemId && row.units < 20) {
+                              handleQuantityChange(row.units + 1, row.id);
                             }
                           }}
-                          color={row.unit < 4 ? "green" : "black"}
-                          disabled={!row.menuItemId || row.unit >= 3}
+                          color={row.units < 4 ? "green" : "black"}
+                          disabled={!row.menuItemId || row.units >= 3}
                         />
                       </div>
                     </TableCell>
