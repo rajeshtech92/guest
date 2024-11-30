@@ -99,7 +99,7 @@ function UserProfilePage() {
         <nav aria-label="breadcrumb" className="main-breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
-              <a href="/headerHome">Home</a>
+              <a href="/Home">Home</a>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
               User Profile

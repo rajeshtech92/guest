@@ -152,7 +152,7 @@ const Banquet = () => {
     { field: "price", headerName: "Price", flex: 0.5 },
   ];
   const onHome = () => {
-    navigate("/headerHome");
+    navigate("/Home");
   };
  
   return (

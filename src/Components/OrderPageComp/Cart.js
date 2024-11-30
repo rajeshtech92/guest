@@ -286,7 +286,7 @@ const Cart = () => {
 
   const grandTotal = calculateGrandTotal();
   return (
-    <div>
+    <div className="order">
       <h4 className="pageTitle">ordering standard</h4>
       <Box
         sx={{
@@ -354,7 +354,7 @@ const Cart = () => {
                   <TableRow key={row.id}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>
-                      <Select
+                      <Select className="SelectMenuItem"
                         value={
                           row.menuItemId
                             ? `${row.menuItemId}-${row.price}-${row.quantity}`
@@ -504,7 +504,7 @@ const Cart = () => {
 
               <TableRow>
                 <TableCell
-                  colSpan={5}
+                  colSpan={6}
                   style={{ textAlign: "right", color: "red" }}
                 >
                   <strong>GRAND TOTAL: GST INCLUDED</strong>
@@ -521,8 +521,8 @@ const Cart = () => {
             </TableBody>
           </Table>
         </Card>
-        <Box sx={{ textAlign: "center", marginTop: "20px" }}>
-          <Button
+        <Box sx={{ textAlign: "center", marginTop: "20px" }} className=" PlaceOrder">
+          <Button 
             variant="contained"
             onClick={handleAddToOrder}
             style={{
@@ -531,8 +531,8 @@ const Cart = () => {
               fontFamily: "sans-serif",
               fontWeight: "600",
               float: "right",
-              marginRight: "18px",
-              textTransform: "lowercase",
+              // marginRight: "18px",
+              textTransform: "capitalize",
               marginBottom: "8px",
             }}
           >

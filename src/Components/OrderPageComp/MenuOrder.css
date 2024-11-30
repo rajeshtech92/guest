@@ -25,3 +25,95 @@
   font-size: 28px;
   font-family: "sans-serif";
 }
+/* Base styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #121212;
+}
+
+.Dialog_Box {
+  padding: 20px;
+}
+
+/* Responsive styles */
+
+/* Mobile (up to 600px) */
+@media (max-width: 768px) { 
+  .order_online {
+    font-size: 10px;
+    text-align: center;
+  }
+
+  .MuiTablePagination-root {
+    flex-wrap: wrap;
+    font-size: 6px;
+  }
+
+  .Dialog_Box {
+    padding: 5px;
+  }
+
+  .MuiButton-root {
+    font-size: 6px;
+    padding: 4px 6px;
+  }
+}
+
+/* Tablet (601px to 960px) */
+@media (max-width: 1024px) {
+  .order_online {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .MuiTablePagination-root {
+    flex-wrap: nowrap;
+    font-size: 14px;
+  }
+
+  .Dialog_Box {
+    padding: 15px;
+  }
+
+  .MuiButton-root {
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+}
+
+/* Desktop (above 960px) */
+@media (min-width: 961px) {
+  .order_online {
+    font-size: 32px;
+    text-align: left;
+  }
+
+  .MuiTablePagination-root {
+    font-size: 16px;
+  }
+
+  .Dialog_Box {
+    padding: 20px;
+  }
+
+  .MuiButton-root {
+    font-size: 16px;
+    padding: 12px 20px;
+  }
+}
+@media (max-width: 600px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

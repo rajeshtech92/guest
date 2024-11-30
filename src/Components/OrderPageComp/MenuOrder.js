@@ -309,11 +309,11 @@ const MenuOrder = () => {
   const columns = useMemo(
     () => [
       {
-        Header: "order ID",
+        Header: "Order ID",
         accessor: "orderID",
       },
       {
-        Header: "menuItemName",
+        Header: "MenuItemName",
         accessor: "menuItemName",
       },
       {
@@ -429,7 +429,7 @@ const MenuOrder = () => {
 
   if (loading) {
     return (
-      <div
+      <div className="loader"
         style={{
           display: "flex",
           flexDirection: "column",
@@ -478,20 +478,7 @@ const MenuOrder = () => {
     <>
       <HeaderProfile />
       <Paper sx={{ width: "100%", padding: 0.8 }}>
-        <Typography
-          variant="h4"
-          gutterBottom
-          className="order_online"
-          // style={{
-          //   fontSize: "1.5rem",
-          //   fontFamily: "sans-serif",
-          //   fontWeight: "600",
-          //   marginLeft: "20px",
-          //   marginTop:"8px",
-
-          //   color: "#1976d2",
-          // }}
-        >
+        <Typography variant="h4" gutterBottom className="order_online">
           order online
         </Typography>
         <Box display="flex" alignItems="center" mb={1}>
@@ -501,7 +488,7 @@ const MenuOrder = () => {
             size="small"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ marginLeft: "20px" }}
+            style={{ marginLeft: "14px" }}
           />
           <Box
             display="flex"
@@ -519,6 +506,7 @@ const MenuOrder = () => {
               SelectProps={{
                 native: true,
               }}
+              style={{ marginRight: "9px" }}
             >
               <option value="all">All Orders</option>
               <option value="new">New Orders</option>
@@ -527,7 +515,6 @@ const MenuOrder = () => {
           </Box>
           <Box ml="auto">
             {" "}
-            {/* This box pushes the button to the right */}
             <Button
               variant="contained"
               color="primary"
@@ -536,7 +523,8 @@ const MenuOrder = () => {
                 height: "50px",
                 fontFamily: "sans-serif",
                 fontWeight: "600",
-                textTransform: "lowercase",
+                textTransform: "capitalize",
+                marginLeft: "4px",
               }}
             >
               Order Item
@@ -577,12 +565,9 @@ const MenuOrder = () => {
                 prepareRow(row);
                 return (
                   <StyledTableRow
-                  // {...row.getRowProps()}
-                  // onClick={() => handleRowClick(row.original)}
-                  // style={{ cursor: "pointer" }}
                   >
                     {row.cells.map((cell) => (
-                      <StyledTableCell {...cell.getCellProps()}>
+                      <StyledTableCell {...cell.getCellProps()} data-label={cell.column.Header}>
                         {cell.render("Cell")}
                       </StyledTableCell>
                     ))}
@@ -594,7 +579,7 @@ const MenuOrder = () => {
               <TableCell colSpan={5} style={{ textAlign: "right" }}>
                 <strong>GRAND TOTAL: GST INCLUDED</strong>
               </TableCell>
-              <TableCell style={{ color: "green" }}>
+              <TableCell style={{ color: "green"}}>
                 <strong>₹{grandTotal.toFixed(2)}</strong>
               </TableCell>
             </TableRow>
@@ -664,49 +649,70 @@ const MenuOrder = () => {
       </table> */}
 
         {/* Modal Dialog */}
-        <Dialog open={openModal} onClose={handleCloseModal}>
-          <DialogTitle>Order Details</DialogTitle>
-          <DialogContent>
-            {selectedOrder ? (
-              <Box>
-                <Typography variant="h6">
-                  Order ID: {selectedOrder.orderID}
-                </Typography>
-                <Typography variant="body1" style={{ marginBottom: "8px" }}>
-                  <span style={{ color: "red" }}>Menu Item Name:</span>
-                  <span
-                    style={{
-                      float: "right",
-                      color: "green",
-                      marginLeft: "12px",
-                    }}
-                  >
-                    {selectedOrder.menuItemName}
-                  </span>
-                </Typography>
-                <Typography variant="body1">
-                  Units: {selectedOrder.units}
-                </Typography>
-                <Typography variant="body1">
-                  Total: {selectedOrder.itemTotal}
-                </Typography>
-                <Typography variant="body1" style={{ marginBottom: "8px" }}>
-                  Order Status:{" "}
-                  <span style={{ float: "right", marginLeft: "8px" }}>
-                    {getStatusLabel(selectedOrder.orderStatus)}
-                  </span>
-                </Typography>
-              </Box>
-            ) : (
-              <Typography>No order details available.</Typography>
-            )}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseModal} color="primary">
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <div className="Dialog_Box">
+          <Dialog
+            open={openModal}
+            onClose={handleCloseModal}
+            fullWidth
+  maxWidth="sm"
+  PaperProps={{
+    style: { margin: "8px" },
+            }}
+          >
+            <DialogTitle>Order Details</DialogTitle>
+            <div className="Dialog_Box" style={{textAlign:"center"}}>
+            <DialogContent>
+              {selectedOrder ? (
+                <Box>
+                  <Typography variant="h6">
+                  <span></span>Order ID: <span>{selectedOrder.orderID}</span><br></br><br></br>
+                  </Typography>
+                  <Typography variant="body1" style={{ marginBottom: "8px" }}>
+                    <span style={{ color: "red" }}>Menu Item Name:</span>
+                    <span
+                      style={{
+                        float: "right",
+                        color: "green",
+                        marginRight: "20px",
+                      }}
+                    >
+                      <span>{selectedOrder.menuItemName}</span>
+                    </span>
+                  </Typography>
+              
+                  <Typography variant="body1">
+                  <span style={{marginLeft:"68px"}}>Units:</span> <span style={{
+                        float: "right",
+                        marginRight: "20px",
+                      }}>{selectedOrder.units}</span><br></br><br></br>
+                  </Typography>
+                  <Typography variant="body1">
+                  <span style={{marginLeft:"83px"}}>Total:</span> <span style={{
+                        float: "right",
+                        marginRight: "20px",
+                      }}>{selectedOrder.itemTotal}</span><br></br><br></br>
+                  </Typography>
+                  <Typography variant="body1" style={{ marginBottom: "8px" }}>
+                  <span style={{marginLeft:"48px"}}>Order Status:{" "}</span>
+                    
+                    <span style={{ float: "right", marginLeft: "8px" }}>
+                    <span>{getStatusLabel(selectedOrder.orderStatus)}</span>
+                    </span>
+                  </Typography>
+                 
+                </Box>
+              ) : (
+                <Typography>No order details available.</Typography>
+              )}
+            </DialogContent>
+            </div>
+            <DialogActions>
+              <Button onClick={handleCloseModal} color="primary">
+                Close
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
       </Paper>
     </>
   );

@@ -52,7 +52,7 @@ function ChangePassword() {
           position: "top-right",
         });
         setTimeout(() => {
-          navigate("/headerHome");
+          navigate("/Home");
         }, 1000); // Navigate after 2 seconds to allow the toast to be displayed
       })
       .catch((error) => {

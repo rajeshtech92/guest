@@ -62,7 +62,7 @@ function HeaderProfile() {
     if (page === "MENU") {
       navigate("/menuPage");
     } else if (page === "HOME") {
-      navigate("/headerHome");
+      navigate("/Home");
     } else if (page === "ORDER ONLINE") {
       navigate("/menuOrder");
     } else if (page === "BANQUETS") {
@@ -252,7 +252,7 @@ function HeaderProfile() {
       
       {/* Define the Routes for your application */}
       <Routes>
-        <Route path="/headerHome" element={<Headerbar />} />
+        <Route path="/Home" element={<Headerbar />} />
         <Route path="/menuPage" element={<MenuPage />} />
         <Route path="/banquetPage" element={<Banquet />} />
         <Route path="/orderPage" element={<Order />} />

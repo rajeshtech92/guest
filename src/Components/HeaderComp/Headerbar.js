@@ -83,7 +83,7 @@ function Headerbar() {
     if (page === "MENU") {
       navigate("/menuPage");
     } else if (page === "HOME") {
-      navigate("/headerHome");
+      navigate("/Home");
     } else if (page === "ORDER ONLINE") {
       navigate("/menuOrder");
     } else if (page === "BANQUETS") {
@@ -359,7 +359,7 @@ function Headerbar() {
         )}
         {/* Define the Routes for your application */}
         <Routes>
-          <Route path="/headerHome" element={<HeaderBar />} />
+          <Route path="/Home" element={<HeaderBar />} />
           <Route path="/menuPage" element={<menuPage />} />
           <Route path="/banquetPage" element={<Banquet />} />
           <Route path="/orderPage" element={<Order />} />

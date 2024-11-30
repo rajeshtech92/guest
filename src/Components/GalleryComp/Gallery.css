@@ -28,7 +28,7 @@
   .custom-buttons {
     margin: 0 10px;
     color: white;
-    width: 100px;
+    /* width: 100px; */
     height: 45px;
     border-radius: 2;
   }
@@ -63,7 +63,7 @@
 
 .grid-images img:hover {
   transform: scale(1.05);
-  opacity: 0.5; /* Corrected opacity value */
+  opacity: 0.5; 
 }
 
 
