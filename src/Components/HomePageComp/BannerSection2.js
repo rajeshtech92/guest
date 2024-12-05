@@ -56,9 +56,6 @@ const BannerSection2 = ({ setLoading }) => {
 
     return (
         <section className="section kf-reservation kf-section-no-margin">
-         {/* {loading ? (
-            <div className="loader">Loading...</div>
-        ) : ( */}
             <div className="kf-container">
                 <div className="kf-reservation-form">
                     <div className="image-left">
@@ -66,14 +63,13 @@ const BannerSection2 = ({ setLoading }) => {
                     </div>
                     <div className="kf-titles align-center">
                         <div className="kf-subtitle">Fresh Curries &amp; Naan</div>
-                        <img src={`data:image/jpg;base64,${images.imageCenter}`} alt="Curries and Naan" style={{width: 'inherit',height: '497px'}}/>
+                        <img src={`data:image/jpg;base64,${images.imageCenter}`} alt="Curries and Naan" className="center-image" style={{width: 'inherit',height: '497px'}}/>
                     </div>
                     <div className="image-right">
                         <img src={`data:image/jpg;base64,${images.imageRight}`} alt="Dining area" />
                     </div>
                 </div>
             </div>
-        {/* )} */}
         </section>
     );
 };

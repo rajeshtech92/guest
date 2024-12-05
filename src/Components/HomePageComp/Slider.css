@@ -38,3 +38,50 @@
     transform: translateY(0);
   }
 }
+@media (max-width: 768px) {
+  .carousel-caption h3 {
+    font-size: 20px; 
+  }
+  .carousel-caption p {
+    font-size: 14px;
+    padding: 5px; 
+  }
+  .carousel-item img {
+    height: 250px; 
+  }
+}
+@media (max-width: 340px) {
+  .carousel-caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 10;
+    padding: 10px;
+    
+  }
+
+  .carousel-caption h3 {
+    font-family: "Oswald", sans-serif;
+    font-size: 18px !important; 
+    color: #fff;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+  }
+
+  .carousel-caption p {
+    font-family: "Oswald", sans-serif;
+    font-size: 12px !important; 
+    color: #fff !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+    margin: 0 !important; 
+    padding: 0 !important; 
+  }
+
+  .carousel-item img {
+    height: 200px !important;
+  }
+}
+

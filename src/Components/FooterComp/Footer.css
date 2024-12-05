@@ -102,4 +102,67 @@ font-size: x-large;
 * {
     box-sizing: border-box;
 }
-
+.footer-size{
+  margin: 0;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  line-height: 1.334;
+  letter-spacing: 0em;
+}
+@media (max-width: 340px) {
+    /* Adjust Font Sizes */
+    .kf-f-hours h5,
+    .kf-f-contact h5,
+    .kf-f-gallery h5 {
+      font-size: 12px;
+    }
+  
+    .kf-f-hours em,
+    .kf-f-contact em,
+    .kf-f-gallery p {
+      font-size: 10px;
+    }
+  
+    /* Center Text */
+    .kf-f-hours div,
+    .kf-f-contact div {
+      text-align: center;
+      font-size: 12px;
+    }
+  
+    /* Adjust Icon Sizes */
+    .icon-color {
+      font-size: 14px; /* Adjust as needed */
+    }
+  
+    /* Adjust Logo */
+    .kf-logo img {
+      max-width: 60%;
+    }
+  
+    /* Adjust Gallery Images */
+    .kf-f-gallery img {
+      height: 60px;
+      width: 100%;
+      object-fit: cover;
+    }
+  
+    /* Adjust Buttons */
+    .custom-buttons {
+      font-size: 10px;
+      padding: 6px 10px;
+      max-width: 280px;
+    }
+  
+    /* Adjust Modal */
+    .MuiModal-root img {
+      max-width: 100%;
+      max-height: 80vh;
+    }
+  
+    /* Adjust Grid Spacing */
+    .kf-footers .MuiGrid-container {
+      spacing: 1;
+    }
+  
+  }

@@ -79,15 +79,12 @@ function Footer({ setLoading }) {
             sx={{ visibility: "visible" }}
           >
             <a href="index.html">
-              <img
+              <img className="logo-Image"
                 src={logoImage}
                 alt="Footer Logo"
                 style={{
                   maxWidth: "70%",
                   width: "auto",
-                  // maxHeight: "100px",
-                  // marginTop: "62px",
-                  // textAlign: "center",
                 }}
               />
             </a>
@@ -100,7 +97,7 @@ function Footer({ setLoading }) {
             data-animate="active"
             sx={{ visibility: "visible" }}
           >
-            <Typography variant="h5">Business hours</Typography>
+            <Typography variant="h5" className="footer-size">Business hours</Typography>
             <span>&nbsp;</span>
             <ul>
               <li>
@@ -121,7 +118,7 @@ function Footer({ setLoading }) {
             data-animate="active"
             sx={{ visibility: "visible" }}
           >
-            <Typography variant="h5">Contact Us</Typography>
+            <Typography variant="h5" className="footer-size">Contact Us</Typography>
             <span>&nbsp;</span>
             <ul>
               <li>
@@ -152,7 +149,7 @@ function Footer({ setLoading }) {
             data-animate="active"
             sx={{ visibility: "visible" }}
           >
-            <Typography variant="h5">Gallery</Typography>
+            <Typography variant="h5" className="footer-size">Gallery</Typography>
             <span>&nbsp;</span>
             <ul>
               {images.map((image, index) => (

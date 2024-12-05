@@ -101,6 +101,7 @@ const Slider = ({ setLoading }) => {
               />
               <Carousel.Caption>
                 <h3
+                 className="FoodFestival"
                   style={{
                     fontFamily: "Oswald",
                     fontSize: "90px",
@@ -112,6 +113,7 @@ const Slider = ({ setLoading }) => {
                   {image.title || `Fast Food Festival`}
                 </h3>
                 <p
+                className="Stacked-Happiness"
                   style={{
                     fontFamily: "Oswald",
                     fontSize: "50px",

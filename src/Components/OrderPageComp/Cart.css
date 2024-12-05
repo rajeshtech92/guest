@@ -71,48 +71,87 @@
   }
 }
 
-/* Mobile view 768px*/
-@media (max-width: 768px) {
-  .order {
-    padding: 5px;
-  }
-
-  .pageTitle {
-    font-size: 1.2rem;
-  }
-
-  .MuiSelect-root {
-    width: 200px;
-  }
-
-  input[type="text"] {
-    width: 30px;
-    font-size: 10px;
-  }
-
+/* Mobile view 320px*/
+@media (max-width: 320px) {
   .SelectMenuItem {
-    width: 80%;
+    width: 70px !important;
+    font-size: 10px !important;
   }
-  button {
-    width: 90%;
-    margin: 10px auto;
-    font-size: 0.8rem;
-  }
-
-  .PlaceOrder{
-    margin-right: 55px;
-  }
-  .icon-add,
-  .icon-btn-minus {
-    width: 25px;
-    height: 25px;
-  }
-
-  .MuiTable-root {
-    font-size: 0.8rem;
-  }
-
+.Select-Menu{
+  font-size: 12px;
+}
   .MuiTableCell-root {
-    padding: 5px;
+    padding: 0px !important;
+    font-size: 10px !important;
+  }
+
+  button {
+    font-size: 10px !important;
+    padding: 5px 10px !important;
+    width: 100% !important;
+  }
+  .card {
+    max-width: 320 !important;
+    margin: 10px auto !important;
+  }
+  .texts-color {
+    font-size: 10px !important;
+  }
+  #TableCell {
+    font-size: 10px !important;
+    padding: 5px !important;
+  }
+  .SelectMenuItem {
+    width: "150px" !important;
+    height: 30px !important;
+    font-size: 10px !important;
+  }
+  .icons {
+    display: flex !important;
+    align-items: center !important;
+    font-size: 16px !important;
+  }
+
+  #FontAwesomeIcon {
+    font-size: 10px !important;
+    cursor: pointer !important;
+  }
+  .inputs {
+    width: 20px !important;
+    height: 15px !important;
+    font-size: 10px !important;
+    text-align: center !important;
+    font-size: 10px !important;
+    text-align: center;
+    margin: 0 !important; /* No margin around input */
+    padding: 0 !important;
+  }
+  .pageTitle {
+    font-size: 15px;
+  }
+  .SelectYourMenu {
+    font-size: 15px;
+  }
+  .icon-add {
+    font-size: 10px !important; /* Ensure font size is fixed */
+    width: 16px !important; /* Adjust width for smaller size */
+    height: 16px !important; /* Adjust height for smaller size */
+    padding: 5px !important; /* Add padding */
+  }
+
+  .icon-btn-minus {
+    font-size: 10px !important; /* Ensure font size is fixed */
+    width: 16px !important; /* Adjust width for smaller size */
+    height: 16px !important; /* Adjust height for smaller size */
+    margin-left: 5px !important; /* Add consistent spacing */
+    padding: 5px !important;
+  }
+
+  .icon {
+    display: flex;
+    justify-content: center; /* Horizontally center the content */
+    align-items: center; /* Vertically center the content */
+    margin-right: 10px;
+    width: 100%; /* Make sure it spans the container width */
   }
 }

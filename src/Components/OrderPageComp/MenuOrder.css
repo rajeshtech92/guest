@@ -1,20 +1,17 @@
-/* tableStyles.css */
 
-/* Reduce padding in table cells */
 .table-cell {
-  padding: 4px 8px; /* Adjust values as needed */
-  font-size: 14px;  /* You can adjust the font size if needed */
+  padding: 4px 8px; 
+  font-size: 14px; 
 }
 
-/* Style for table header */
 .table-header {
   color: white;
-  border-bottom: 1px gray; /* Red line at the bottom of the header */
-  padding: 4px 8px; /* Adjust values as needed */
+  border-bottom: 1px gray; 
+  padding: 4px 8px; 
 }
 /* Pagination container styling */
 .pagination-container {
-  padding: 8px; /* Adjust padding as needed */
+  padding: 8px;
 }
 .order_online{
   width:100%;
@@ -46,32 +43,10 @@ body {
 
 /* Responsive styles */
 
-/* Mobile (up to 600px) */
-@media (max-width: 768px) { 
-  .order_online {
-    font-size: 10px;
-    text-align: center;
-  }
-
-  .MuiTablePagination-root {
-    flex-wrap: wrap;
-    font-size: 6px;
-  }
-
-  .Dialog_Box {
-    padding: 5px;
-  }
-
-  .MuiButton-root {
-    font-size: 6px;
-    padding: 4px 6px;
-  }
-}
-
 /* Tablet (601px to 960px) */
 @media (max-width: 1024px) {
   .order_online {
-    font-size: 24px;
+    font-size: 16px;
     text-align: center;
   }
 
@@ -116,4 +91,56 @@ body {
     overflow-x: auto;
     white-space: nowrap;
   }
+}
+/* Mobile (up to 320px) */
+@media (max-width: 320px) {
+  .order_online {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-top: -73px;
+  }
+
+  .TextField-Search {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .custom-select {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .OrderItem {
+    width: 100%;
+    margin: 10px 0;
+    font-size: 0.9rem;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  .pagination-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .Dialog_Box {
+    padding: 10px;
+  }
+ .GRAND-TOTAL {
+    text-align: left !important;
+  }
+
+  .GRAND-TOTAL strong {
+    display: block;
+    text-align: left;
+    margin-bottom: 8px;
+  }
+  .GRAND-TOTAL .grand-total-value {
+    text-align: left !important;
+    padding-left: 8px !important;
+  }
+ 
 }

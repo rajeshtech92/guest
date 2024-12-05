@@ -126,8 +126,8 @@ function Gallery() {
                 <span>Our Photo Gallery</span>
               </Typography>
             </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h6" className="gallery-heading">
+            <Grid item xs={12} className="gallery-heading">
+              <Typography variant="h6" >
                 {contentData}
               </Typography>
             </Grid>

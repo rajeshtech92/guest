@@ -68,7 +68,7 @@ function Headerbar() {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [userData, setUserData] = useState(null);
   const [activePage, setActivePage] = useState("");
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -110,26 +110,25 @@ function Headerbar() {
     navigate("/userProfile");
   };
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(
-        `https://guesthouse-api-dje8gvcwayfdfmbr.eastus-01.azurewebsites.net/api/Users/${storedId}`
-      );
-      setUserData(response.data);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://guesthouse-api-dje8gvcwayfdfmbr.eastus-01.azurewebsites.net/api/Users/${storedId}`
+        );
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
- 
     fetchData();
   }, []);
 
   return (
     <>
-      <div className="home-bg" style={{overflow: "hidden"}}>
+      <div className="home-bg" style={{ overflow: "hidden" }}>
         {loading ? (
           <div
             style={{
@@ -176,12 +175,14 @@ function Headerbar() {
                       letterSpacing: ".3rem",
                       color: "inherit",
                       textDecoration: "none",
+                      fontSize: { xs: "12px", md: "16px" },
                     }}
                   >
                     <img
                       src={logo}
                       alt="Logo"
                       style={{ height: "120px", width: "auto" }}
+                      className="logo-height"
                     />
                   </Typography>
                   <Box
@@ -226,7 +227,9 @@ function Headerbar() {
                           key={page}
                           onClick={() => handleCloseNavMenu(page)}
                         >
-                          <Typography textAlign="center">{page}</Typography>
+                          <Typography textAlign="center" fontSize="12px">
+                            {page}
+                          </Typography>
                         </MenuItem>
                       ))}
                     </Menu>
@@ -246,13 +249,7 @@ function Headerbar() {
                       color: "inherit",
                       textDecoration: "none",
                     }}
-                  >
-                    {/* <img
-                src={logo}
-                alt="Logo"
-                style={{ height: "40px", width: "auto" }}
-              /> */}
-                  </Typography>
+                  ></Typography>
                   <Box
                     sx={{
                       flexGrow: 1,
@@ -268,7 +265,7 @@ function Headerbar() {
                           my: 2,
                           color: activePage === page ? "red" : "white",
                           display: "block",
-                          fontSize: "14px",
+                          fontSize: { xs: "12px", md: "14px" },
                           lineHeight: "50px",
                           textTransform: "uppercase",
                           letterSpacing: "0.03em",
@@ -284,20 +281,36 @@ function Headerbar() {
                     ))}
                   </Box>
                   <RouterLink
-                    to="/cart" // Update to your route
+                    to="/cart"
                     className="btn-epic"
-                    style={{ width: "12%" }}
+                    style={{
+                      width: "100%",
+                      maxWidth: "120px",
+                      textAlign: "center",
+                    }}
                   >
-                    <div>
-                      <span>ORDER NOW</span>
-                      <span>ORDER NOW</span>
+                    <div className="ORDER"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <span className="ORDER-NOW" style={{ fontSize: "12px" }}>ORDER NOW</span>
+                      <span className="ORDER-NOW" style={{ fontSize: "12px" }}>ORDER NOW</span>
                     </div>
                   </RouterLink>
-                  <Box sx={{ flexGrow: 0, ml: "20px" }}>
+                  <Box sx={{ flexGrow: 0, ml: { xs: 1, md: "20px" } }}>
                     <Tooltip title="Open settings">
                       <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                         {userData && (
-                          <Typography sx={{ color: "white", marginRight: 1 }}>
+                          <Typography
+                            sx={{
+                              color: "white",
+                              marginRight: 1,
+                              fontSize: { xs: "12px", md: "14px" },
+                            }}
+                          >
                             {userData.firstName}
                           </Typography>
                         )}
@@ -305,7 +318,7 @@ function Headerbar() {
                       </IconButton>
                     </Tooltip>
                     <Menu
-                      sx={{ mt: "68px" }}
+                      sx={{ mt: { xs: "45px", md: "68px" } }}
                       id="menu-appbar"
                       anchorEl={anchorElUser}
                       anchorOrigin={{
@@ -337,7 +350,7 @@ function Headerbar() {
                             icon={setting.icon}
                             style={{ marginRight: "10px" }}
                           />
-                          <Typography textAlign="center">
+                          <Typography textAlign="center" fontSize="12px">
                             {setting.name}
                           </Typography>
                         </MenuItem>
@@ -347,14 +360,25 @@ function Headerbar() {
                 </Toolbar>
               </Container>
             </AppBar>
-            <Slider setLoading={setLoading}/>
-            <BannerSection1 setLoading={setLoading}/>
-           <BannerSection2 setLoading={setLoading}/> 
-             <BannerSection3 setLoading={setLoading}/>
+            <Slider setLoading={setLoading} />
+            <h4
+              className="Bring-people"
+              style={{
+                color: "white",
+                textAlign: "center",
+                paddingTop: "40px",
+                fontFamily: "emoji",
+              }}
+            >
+              Bring people together with great good
+            </h4>
+            <BannerSection1 setLoading={setLoading} />
+            <BannerSection2 setLoading={setLoading} />
+            {/* <BannerSection3 setLoading={setLoading}/>
             <OurStory setLoading={setLoading}/>
-            <BannerSectionCTA setLoading={setLoading}/>
-            <ImagesMapping setLoading={setLoading}/>
-            <Footer setLoading={setLoading}/> 
+            <BannerSectionCTA setLoading={setLoading}/> */}
+            <ImagesMapping setLoading={setLoading} />
+            <Footer setLoading={setLoading} />
           </>
         )}
         {/* Define the Routes for your application */}

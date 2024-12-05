@@ -131,17 +131,57 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const StyledPagination = styled(TablePagination)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   borderRadius: theme.shape.borderRadius,
-  padding: theme.spacing(0.5),
+  padding: theme.spacing(1), // Default padding for desktop
+
   "& .MuiTablePagination-select": {
     backgroundColor: theme.palette.background.paper,
     borderRadius: theme.shape.borderRadius,
-    padding: theme.spacing(0.25),
+    padding: theme.spacing(0.5),
+    fontSize: "14px", // Default font size for larger screens
   },
+
   "& .MuiTablePagination-actions": {
+    display: "flex",
+    justifyContent: "center", // Center action buttons (next, previous)
+    alignItems: "center", // Align buttons vertically
+    gap: "8px",
     "& .MuiIconButton-root": {
       color: theme.palette.primary.main,
       "&:disabled": {
         color: theme.palette.action.disabled,
+      },
+      padding: "8px", // Set padding for the buttons
+    },
+  },
+
+  // Mobile-specific styles for 320px width
+  "@media (max-width: 320px)": {
+    padding: theme.spacing(0.5), // Reduce padding for mobile
+    fontSize: "10px", // Reduce font size for mobile
+    flexDirection: "column", // Stack pagination items vertically
+    alignItems: "center", // Center-align everything
+    textAlign: "center",
+   
+
+
+    "& .MuiTablePagination-toolbar": {
+      flexDirection: "column", // Stack toolbar items
+      alignItems: "center",
+      gap: "4px", // Add spacing between elements
+    },
+
+    "& .MuiTablePagination-select": {
+      fontSize: "10px", // Smaller font size for dropdown
+      width: "80px", // Reduce width of dropdown for small screens
+      textAlign: "center",
+    },
+
+    "& .MuiTablePagination-actions": {
+      flexDirection: "row", // Keep action buttons in a row on mobile
+      gap: "5px",
+      "& .MuiIconButton-root": {
+        margin: "0 5px", // Small margin between buttons
+        padding: "6px", // Reduce padding for buttons
       },
     },
   },
@@ -429,7 +469,8 @@ const MenuOrder = () => {
 
   if (loading) {
     return (
-      <div className="loader"
+      <div
+        className="loader"
         style={{
           display: "flex",
           flexDirection: "column",
@@ -475,197 +516,177 @@ const MenuOrder = () => {
   const grandTotal = calculateGrandTotal();
 
   return (
-    <>
+    <div className="top">
       <HeaderProfile />
-      <Paper sx={{ width: "100%", padding: 0.8 }}>
-        <Typography variant="h4" gutterBottom className="order_online">
-          order online
-        </Typography>
-        <Box display="flex" alignItems="center" mb={1}>
-          <TextField
-            label="Search"
-            variant="outlined"
-            size="small"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ marginLeft: "14px" }}
-          />
-          <Box
-            display="flex"
-            alignItems="center"
-            mb={1}
-            style={{ marginLeft: "15px", marginTop: "8px" }}
-          >
-            <TextField
-              select
-              label="Search"
-              variant="outlined"
-              size="small"
-              value={filterType}
-              onChange={(e) => setFilterType(e.target.value)}
-              SelectProps={{
-                native: true,
-              }}
-              style={{ marginRight: "9px" }}
-            >
-              <option value="all">All Orders</option>
-              <option value="new">New Orders</option>
-              <option value="old">Old Orders</option>
-            </TextField>
-          </Box>
-          <Box ml="auto">
-            {" "}
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleCart}
-              style={{
-                height: "50px",
-                fontFamily: "sans-serif",
-                fontWeight: "600",
-                textTransform: "capitalize",
-                marginLeft: "4px",
-              }}
-            >
-              Order Item
-            </Button>
-          </Box>
-        </Box>
-
-        <TableContainer component={Paper}>
-          <Table {...getTableProps()} aria-label="Order Table">
-            <TableHead>
-              {headerGroups.map((headerGroup) => (
-                <TableRow {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <StyledTableCell
-                      {...column.getHeaderProps(column.getSortByToggleProps())}
-                      sortDirection={
-                        column.isSorted
-                          ? column.isSortedDesc
-                            ? "desc"
-                            : "asc"
-                          : false
-                      }
-                    >
-                      <TableSortLabel
-                        active={column.isSorted}
-                        direction={column.isSortedDesc ? "desc" : "asc"}
-                      >
-                        {column.render("Header")}
-                      </TableSortLabel>
-                    </StyledTableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHead>
-
-            <TableBody {...getTableBodyProps()}>
-              {page.map((row) => {
-                prepareRow(row);
-                return (
-                  <StyledTableRow
-                  >
-                    {row.cells.map((cell) => (
-                      <StyledTableCell {...cell.getCellProps()} data-label={cell.column.Header}>
-                        {cell.render("Cell")}
-                      </StyledTableCell>
-                    ))}
-                  </StyledTableRow>
-                );
-              })}
-            </TableBody>
-            <TableRow>
-              <TableCell colSpan={5} style={{ textAlign: "right" }}>
-                <strong>GRAND TOTAL: GST INCLUDED</strong>
-              </TableCell>
-              <TableCell style={{ color: "green"}}>
-                <strong>₹{grandTotal.toFixed(2)}</strong>
-              </TableCell>
-            </TableRow>
-          </Table>
-        </TableContainer>
-
-        <StyledPagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={filteredData.length}
-          rowsPerPage={pageSize}
-          page={pageIndex}
-          onPageChange={(e, newPage) => gotoPage(newPage)}
-          onRowsPerPageChange={(e) => {
-            setPageSize(Number(e.target.value));
-            gotoPage(0);
-          }}
-        />
-        {/* <Box display="flex" alignItems="center" mb={2}>
+      {/* <Paper sx={{ width: "100%", padding: 0.8 }}> */}
+      <Typography
+        variant="h4"
+        gutterBottom
+        className="order_online"
+        style={{ fontSize: window.innerWidth < 320 ? "1.5rem" : "1.2rem" }}
+      >
+        order online
+      </Typography>
+      <Box display="flex" alignItems="center" mb={1}>
         <TextField
+          className="TextField-Search"
           label="Search"
           variant="outlined"
           size="small"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          style={{ marginRight: "20px" }}
-        />
-        <TextField
-          select
-          label="Filter Orders"
-          value={filterType}
-          onChange={(e) => setFilterType(e.target.value)}
-          variant="outlined"
-          size="small"
-          SelectProps={{
-            native: true,
+          style={{
+            marginLeft: "14px",
+            width: window.innerWidth < 320 ? "100%" : "auto",
           }}
+        />
+        <Box
+          display="flex"
+          alignItems="center"
+          mb={1}
+          style={{ marginLeft: "15px", marginTop: "8px" }}
         >
-          <option value="all">All Orders</option>
-          <option value="new">New Orders</option>
-          <option value="old">Old Orders</option>
-        </TextField>
-      </Box>
-      <table>
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Menu Item Name</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Order Status</th>
-            <th>Order Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredData.map((order) => (
-            <tr key={order.orderItemID}>
-              <td>{order.orderID}</td>
-              <td>{order.menuItemName}</td>
-              <td>{order.units}</td>
-              <td>{order.itemTotal}</td>
-              <td>{order.orderStatus}</td>
-              <td>{new Date(order.orderCreateDate).toLocaleDateString()}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
-
-        {/* Modal Dialog */}
-        <div className="Dialog_Box">
-          <Dialog
-            open={openModal}
-            onClose={handleCloseModal}
-            fullWidth
-  maxWidth="sm"
-  PaperProps={{
-    style: { margin: "8px" },
+          <TextField
+            select
+            label="Search"
+            variant="outlined"
+            size="small"
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value)}
+            SelectProps={{
+              native: true,
+            }}
+            className="custom-select"
+            style={{ marginRight: "9px" }}
+          >
+            <option value="all" className="New-Old">
+              All Orders
+            </option>
+            <option value="new" className="New-Old">
+              New Orders
+            </option>
+            <option value="old" className="New-Old">
+              Old Orders
+            </option>
+          </TextField>
+        </Box>
+        <Box ml="auto">
+          {" "}
+          <Button
+            className="OrderItem"
+            variant="contained"
+            color="primary"
+            onClick={handleCart}
+            style={{
+              height: "50px",
+              fontFamily: "sans-serif",
+              fontWeight: "600",
+              textTransform: "capitalize",
+              marginLeft: "4px",
             }}
           >
-            <DialogTitle>Order Details</DialogTitle>
-            <div className="Dialog_Box" style={{textAlign:"center"}}>
+            Order Item
+          </Button>
+        </Box>
+      </Box>
+
+      <TableContainer>
+        <Table {...getTableProps()} aria-label="Order Table" className="Table">
+          <TableHead>
+            {headerGroups.map((headerGroup) => (
+              <TableRow {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <StyledTableCell
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                    sortDirection={
+                      column.isSorted
+                        ? column.isSortedDesc
+                          ? "desc"
+                          : "asc"
+                        : false
+                    }
+                  >
+                    <TableSortLabel
+                      active={column.isSorted}
+                      direction={column.isSortedDesc ? "desc" : "asc"}
+                    >
+                      {column.render("Header")}
+                    </TableSortLabel>
+                  </StyledTableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableHead>
+
+          <TableBody {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
+              return (
+                <StyledTableRow>
+                  {row.cells.map((cell) => (
+                    <StyledTableCell
+                      {...cell.getCellProps()}
+                      data-label={cell.column.Header}
+                    >
+                      {cell.render("Cell")}
+                    </StyledTableCell>
+                  ))}
+                </StyledTableRow>
+              );
+            })}
+          </TableBody>
+          <TableRow className="GRAND-TOTAL">
+            <TableCell colSpan={5} style={{ textAlign: "right" }}>
+              <strong>GRAND TOTAL: GST INCLUDED</strong>
+            </TableCell>
+            <TableCell className="grand-total-value" style={{ color: "green" }}>
+              <strong>₹{grandTotal.toFixed(2)}</strong>
+            </TableCell>
+          </TableRow>
+        </Table>
+        <div
+          className="pagination-container"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
+          <StyledPagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={filteredData.length}
+            rowsPerPage={pageSize}
+            page={pageIndex}
+            onPageChange={(e, newPage) => gotoPage(newPage)}
+            onRowsPerPageChange={(e) => {
+              setPageSize(Number(e.target.value));
+              gotoPage(0);
+            }}
+          />
+        </div>
+      </TableContainer>
+
+      {/* Modal Dialog */}
+      <div className="Dialog_Box">
+        <Dialog
+          open={openModal}
+          onClose={handleCloseModal}
+          fullWidth
+          maxWidth="sm"
+          PaperProps={{
+            style: { margin: "8px", width: "100%" },
+          }}
+        >
+          <DialogTitle>Order Details</DialogTitle>
+          <div className="Dialog_Box" style={{ textAlign: "center" }}>
             <DialogContent>
               {selectedOrder ? (
                 <Box>
                   <Typography variant="h6">
-                  <span></span>Order ID: <span>{selectedOrder.orderID}</span><br></br><br></br>
+                    <span></span>Order ID: <span>{selectedOrder.orderID}</span>
+                    <br></br>
+                    <br></br>
                   </Typography>
                   <Typography variant="body1" style={{ marginBottom: "8px" }}>
                     <span style={{ color: "red" }}>Menu Item Name:</span>
@@ -679,42 +700,55 @@ const MenuOrder = () => {
                       <span>{selectedOrder.menuItemName}</span>
                     </span>
                   </Typography>
-              
+
                   <Typography variant="body1">
-                  <span style={{marginLeft:"68px"}}>Units:</span> <span style={{
+                    <span style={{ marginLeft: "68px" }}>Units:</span>{" "}
+                    <span
+                      style={{
                         float: "right",
                         marginRight: "20px",
-                      }}>{selectedOrder.units}</span><br></br><br></br>
+                      }}
+                    >
+                      {selectedOrder.units}
+                    </span>
+                    <br></br>
+                    <br></br>
                   </Typography>
                   <Typography variant="body1">
-                  <span style={{marginLeft:"83px"}}>Total:</span> <span style={{
+                    <span style={{ marginLeft: "83px" }}>Total:</span>{" "}
+                    <span
+                      style={{
                         float: "right",
                         marginRight: "20px",
-                      }}>{selectedOrder.itemTotal}</span><br></br><br></br>
+                      }}
+                    >
+                      {selectedOrder.itemTotal}
+                    </span>
+                    <br></br>
+                    <br></br>
                   </Typography>
                   <Typography variant="body1" style={{ marginBottom: "8px" }}>
-                  <span style={{marginLeft:"48px"}}>Order Status:{" "}</span>
-                    
+                    <span style={{ marginLeft: "48px" }}>Order Status: </span>
+
                     <span style={{ float: "right", marginLeft: "8px" }}>
-                    <span>{getStatusLabel(selectedOrder.orderStatus)}</span>
+                      <span>{getStatusLabel(selectedOrder.orderStatus)}</span>
                     </span>
                   </Typography>
-                 
                 </Box>
               ) : (
                 <Typography>No order details available.</Typography>
               )}
             </DialogContent>
-            </div>
-            <DialogActions>
-              <Button onClick={handleCloseModal} color="primary">
-                Close
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </div>
-      </Paper>
-    </>
+          </div>
+          <DialogActions>
+            <Button onClick={handleCloseModal} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+      {/* </Paper> */}
+    </div>
   );
 };
 

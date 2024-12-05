@@ -42,7 +42,7 @@
 .custom-button {
     margin: 0 10px;
     color: #9ea1a2;
-    width: 15%;
+    width: 16%;
     height: 55px;
     border-radius: 2;
     font-weight: 600;
@@ -60,4 +60,29 @@
     height: auto;
     display: block;
   }
+  @media only screen and (max-width: 340px) {
+    .content-grid h3 {
+      font-size: 16px !important;
+    }
   
+    .content-grid p {
+      font-size: 12px !important;
+    }
+  
+    .text {
+      font-size: 0.8rem;
+    }
+  
+    .custom-button {
+      font-size: 0.8rem;
+      padding: 6px 12px;
+    }
+  
+    img {
+      max-width: 100%;
+    }
+    .catering-bg{
+      background: #121212 !important;
+    padding-top: 0px;
+    }
+  }

@@ -104,3 +104,22 @@
 .btn-epic:hover span:last-child {
   transform: translateY(-24px);
 }
+/* Mobile view 768px*/
+@media (max-width: 320px) {
+    .Bring-people{
+      font-size: 12px;
+    }
+    .logo-heigh{
+      height: 80px;
+      width: auto;
+    }
+    .btn-epic {
+      max-width: 100px;
+      height: 40px; 
+      font-size: 10px; 
+    }
+    .btn-epic div span {
+      font-size: 8px;
+    }
+    
+    }

@@ -251,10 +251,10 @@ const Banquet = () => {
               </Grid>
             </Grid>
           </Grid>
-          <h4 style={{color:"white", marginLeft:"15px", marginBottom:"50px"}}>Our Food items</h4>
+          <h4 style={{color:"white",  margin: "10px 0" }}>Our Food items</h4>
           <Grid container spacing={2} style={{background:"white"}}>
             
-              <div style={{ height: 400, width: "100%", marginLeft:"16px"}}>
+          <Grid item xs={12} className="data-grid-container">
                 <DataGrid
                   rows={rows}
                   columns={columns}
@@ -263,11 +263,8 @@ const Banquet = () => {
                   disableSelectionOnClick
                   density="compact"
                 />
-              </div>
+             </Grid>
             </Grid>
-        
-
-
           <BannerSection2 setLoading={setLoading}></BannerSection2>
           <Footer setLoading={setLoading}/>
         </>

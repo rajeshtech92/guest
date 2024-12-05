@@ -95,160 +95,210 @@ function HeaderProfile() {
   }, []);
 
   return (
-    <div style={{ marginTop: '100px' }}>
-      <AppBar position="fixed" sx={{ backgroundColor: 'black', top: '0' }}>
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href=""
-              sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 600,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              <img src={logo} alt="Logo" style={{ height: '40px', width: 'auto' }} />
-            </Typography>
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, justifyContent: 'center' }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: 'block', md: 'none' },
-                }}
-              >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={() => handleCloseNavMenu(page)}>
-                    <Typography textAlign="center">{page}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href=""
-              sx={{
-                mr: 2,
-                display: { xs: 'flex', md: 'none' },
-                flexGrow: 1,
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              <img src={logo} alt="Logo" style={{ height: '40px', width: 'auto' }} />
-            </Typography>
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={() => handleCloseNavMenu(page)}
-                  sx={{
-                    my: 2,
-                    color: 'white',
-                    display: 'block',
-                    fontSize: '14px',
-                    lineHeight: '50px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.03em',
-                    textDecoration: 'none',
-                    fontWeight: 600,
-                    '&:hover': {
-                      color: '#b99272',
-                    },
-                  }}
-                >
-                  {page}
-                </Button>
-              ))}
-            </Box>
-            <RouterLink
-              to="/menuOrder" // Update to your route
-              className="btn-epic"
-              style={{ width: "12%" }}
-            >
-              <div>
-                <span>ORDER NOW</span>
-                <span>ORDER NOW</span>
-              </div>
-            </RouterLink>
-            <Box sx={{ flexGrow: 0, ml: '20px' }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  {userData && <Typography sx={{ color: 'white', marginRight: 1 }}>{userData.firstName}</Typography>}
-                  <Avatar alt={userData ? userData.firstName : ''} />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: '68px' }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem
-                    key={setting.name}
-                    onClick={() => {
-                      handleCloseUserMenu();
-                      if (setting.name === 'Logout') {
-                        logOut();
-                      }
-                      if (setting.name === 'Profile') {
-                        UserProfile();
-                      }
+    <div style={{ marginTop: '120px' }}>
+     <AppBar position="fixed" sx={{ backgroundColor: 'black', top: '0' }}>
+              <Container maxWidth="xl">
+                <Toolbar disableGutters>
+                  <Typography
+                    variant="h6"
+                    noWrap
+                    component="a"
+                    href=""
+                    sx={{
+                      mr: 2,
+                      display: { xs: "none", md: "flex" },
+                      fontFamily: "monospace",
+                      fontWeight: 600,
+                      letterSpacing: ".3rem",
+                      color: "inherit",
+                      textDecoration: "none",
+                      fontSize: { xs: "12px", md: "16px" },
                     }}
                   >
-                    <FontAwesomeIcon icon={setting.icon} style={{ marginRight: '10px' }} />
-                    <Typography textAlign="center">{setting.name}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
+                    <img
+                      src={logo}
+                      alt="Logo"
+                      style={{ height: "120px", width: "auto" }}
+                      className="logo-height"
+                    />
+                  </Typography>
+                  <Box
+                    sx={{
+                      flexGrow: 1,
+                      display: { xs: "flex", md: "none" },
+                      justifyContent: "center",
+                    }}
+                  >
+                    <IconButton
+                      size="large"
+                      aria-label="account of current user"
+                      aria-controls="menu-appbar"
+                      aria-haspopup="true"
+                      onClick={handleOpenNavMenu}
+                      color="inherit"
+                    >
+                      <MenuIcon />
+                    </IconButton>
+                    <Menu
+                      id="menu-appbar"
+                      anchorEl={anchorElNav}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                      }}
+                      open={Boolean(anchorElNav)}
+                      onClose={handleCloseNavMenu}
+                      sx={{
+                        flexGrow: 1,
+                        display: { xs: "non", md: "flex" },
+                        justifyContent: "center",
+                      }}
+                    >
+                      {pages.map((page) => (
+                        <MenuItem
+                          key={page}
+                          onClick={() => handleCloseNavMenu(page)}
+                        >
+                          <Typography textAlign="center" fontSize="12px">
+                            {page}
+                          </Typography>
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+                  <Typography
+                    variant="h5"
+                    noWrap
+                    component="a"
+                    href=""
+                    sx={{
+                      mr: 2,
+                      display: { xs: "flex", md: "none" },
+                      flexGrow: 1,
+                      fontFamily: "monospace",
+                      fontWeight: 700,
+                      letterSpacing: ".3rem",
+                      color: "inherit",
+                      textDecoration: "none",
+                    }}
+                  ></Typography>
+                  <Box
+                    sx={{
+                      flexGrow: 1,
+                      display: { xs: "none", md: "flex" },
+                      justifyContent: "center",
+                    }}
+                  >
+                    {pages.map((page) => (
+                      <Button
+                        key={page}
+                        onClick={() => handleCloseNavMenu(page)}
+                        sx={{
+                          my: 2,
+                          // color: activePage === page ? "red" : "white",
+                          color:"white",
+                          display: "block",
+                          fontSize: { xs: "12px", md: "14px" },
+                          lineHeight: "50px",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.03em",
+                          textDecoration: "none",
+                          fontWeight: 600,
+                          "&:hover": {
+                            color: "#b99272",
+                          },
+                        }}
+                      >
+                        {page}
+                      </Button>
+                    ))}
+                  </Box>
+                  <RouterLink
+                    to="/cart" // Update to your route
+                    className="btn-epic"
+                    style={{
+                      width: "100%",
+                      maxWidth: "120px", // Constrain button width for small screens
+                      textAlign: "center",
+                    }}
+                  >
+                    <div className="ORDER"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <span className="ORDER-NOW" style={{ fontSize: "12px" }}>ORDER NOW</span>
+                      <span className="ORDER-NOW" style={{ fontSize: "12px" }}>ORDER NOW</span>
+                    </div>
+                  </RouterLink>
+                  <Box sx={{ flexGrow: 0, ml: { xs: 1, md: "20px" } }}>
+                    <Tooltip title="Open settings">
+                      <IconButton className="responsive-icon-button" onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                        {userData && (
+                          <Typography
+                          className="user-name"
+                            sx={{
+                              color: "white",
+                              marginRight: 1,
+                              fontSize: { xs: "12px", md: "14px" },
+                            }}
+                          >
+                            {userData.firstName}
+                          </Typography>
+                        )}
+                        <Avatar className="responsive-avatar" alt={userData ? userData.firstName : ""} />
+                      </IconButton>
+                    </Tooltip>
+                    <Menu
+                      sx={{ mt: { xs: "45px", md: "68px" } }}
+                      id="menu-appbar"
+                      anchorEl={anchorElUser}
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      open={Boolean(anchorElUser)}
+                      onClose={handleCloseUserMenu}
+                    >
+                      {settings.map((setting) => (
+                        <MenuItem
+                          key={setting.name}
+                          onClick={() => {
+                            handleCloseUserMenu();
+                            if (setting.name === "Logout") {
+                              logOut();
+                            }
+                            if (setting.name === "Profile") {
+                              UserProfile();
+                            }
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            icon={setting.icon}
+                            style={{ marginRight: "10px" }}
+                          />
+                          <Typography textAlign="center" fontSize="12px">
+                            {setting.name}
+                          </Typography>
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+                </Toolbar>
+              </Container>
+            </AppBar>
       
       {/* Define the Routes for your application */}
       <Routes>

@@ -298,8 +298,8 @@ const Cart = () => {
           marginRight: "22px",
         }}
       >
-        <div>Select Your Menu</div>
-        <Select
+        <div className="SelectYourMenu">Select Your Menu</div>
+        <Select className="Select-Menu"
           multiple
           value={selectedMenu} // Ensure this is an array
           onChange={handleMenuChange}
@@ -309,6 +309,7 @@ const Cart = () => {
             height: "40px",
             marginTop: "20px",
             marginBottom: "20px",
+            textAlign:"center"
           }}
           renderValue={(selected) => {
             if (selected.length === 0) {
@@ -332,7 +333,7 @@ const Cart = () => {
       </Box>
 
       <TableContainer>
-        <Card sx={{ maxWidth: 1400, marginLeft: "20px", marginBottom: "20px" }}>
+        <Card className="card" sx={{ maxWidth: 1400, marginLeft: "20px", marginBottom: "20px" }}>
           <Table>
             <TableHead className="back-ground">
               <TableRow>
@@ -364,10 +365,10 @@ const Cart = () => {
                           handleMenuItemChange(event, row.id)
                         }
                         displayEmpty
-                        sx={{ width: "340px", height: "40px" }}
+                        sx={{ width: "340px", height: "40px", textAlign:"center"}}
                       >
                         <MenuItem value="" disabled>
-                          Select Menu Item
+                          <span>Select Menu Item</span>
                         </MenuItem>
                         {menuItems
                           .filter((item) => selectedMenu.includes(item.menuId))
@@ -390,7 +391,7 @@ const Cart = () => {
                       </Select>
                     </TableCell>
                     <TableCell>
-                      <div
+                      <div className="icon"
                         style={{
                           display: "flex",
                           justifyContent: "center",
@@ -400,6 +401,7 @@ const Cart = () => {
                       >
                         <FontAwesomeIcon
                           icon={faMinusCircle}
+                          className="icons"
                           style={{
                             fontSize: 30,
                             cursor:
@@ -420,6 +422,7 @@ const Cart = () => {
                           type="text"
                           value={row.units}
                           readOnly
+                          className="inputs"
                           style={{
                             width: "50px",
                             height: "30px",
@@ -434,6 +437,7 @@ const Cart = () => {
                         />
                         <FontAwesomeIcon
                           icon={faPlusCircle}
+                               className="icons"
                           style={{
                             fontSize: 30,
                             cursor:
@@ -453,16 +457,16 @@ const Cart = () => {
                     </TableCell>
 
                     <TableCell>
-                      ₹{row.price ? row.price.toFixed(2) : "0.00"}
+                      {row.price ? row.price.toFixed(2) : "0.00"}
                     </TableCell>
                     <TableCell>
-                      ₹{row.totalPrice ? row.totalPrice.toFixed(2) : "0.00"}
+                      {row.totalPrice ? row.totalPrice.toFixed(2) : "0.00"}
                     </TableCell>
                     <TableCell>
-                      ₹{row.gstAmount ? row.gstAmount.toFixed(2) : "0.00"}
+                      {row.gstAmount ? row.gstAmount.toFixed(2) : "0.00"}
                     </TableCell>
                     <TableCell>
-                      <Grid container spacing={1} justifyContent="center">
+                      <Grid container spacing={1} justifyContent="center" className="icons">
                         <Grid item>
                           {index === inputRows.length - 1 && (
                             <IconButton
@@ -480,7 +484,8 @@ const Cart = () => {
                             </IconButton>
                           )}
                           {inputRows.length > 1 && (
-                            <IconButton
+                            <IconButton 
+                             
                               className="icon-btn-minus"
                               onClick={() => handleRemoveRow(row.id)}
                               style={{
@@ -503,13 +508,13 @@ const Cart = () => {
               })}
 
               <TableRow>
-                <TableCell
+                <TableCell className="GRANDTOTAL"
                   colSpan={6}
                   style={{ textAlign: "right", color: "red" }}
                 >
                   <strong>GRAND TOTAL: GST INCLUDED</strong>
                 </TableCell>
-                <TableCell style={{ color: "green" }}>
+                <TableCell style={{ color: "green" }} className="GRANDTOTAL">
                   <strong>
                     ₹
                     {inputRows

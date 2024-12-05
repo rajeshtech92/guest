@@ -19,17 +19,16 @@ useEffect(() => {
             setLoading(true);
             const storedContent = localStorage.getItem('bannerContent');
                 if (storedContent) {
-                    // If data exists in local storage, parse and set it
                     const parsedContent = JSON.parse(storedContent);
                     setContent(parsedContent);
                     console.log('Loaded content from local storage');
                 } else {
-                    // If data is not in local storage, fetch it from the API
+                 
                     const data = await getAllContent();
                     console.log('API Response:', data);
 
                     // IDs to include for images, headings, and paragraphs
-                    const imageIds = [74, 75, 76, 77];
+                    const imageIds = [98, 75, 76, 77 ];
                     const headingId1 = 78;
                     const headingId2 = 79;
                     const paragraphId1 = 80;
@@ -69,10 +68,11 @@ useEffect(() => {
     }, [setLoading]);
     // Defined static menu names associated with specific images
     const menuNames = [
-        { id: 74, name: 'Biryani' },
+        { id: 98, name: 'Special Dish' },
         { id: 75, name: 'Appetizers' },
         { id: 76, name: 'Naan' },
-        { id: 77, name: 'Pani Puri' }
+        { id: 77, name: 'Pani Puri' },
+         
     ];
 
     return (
