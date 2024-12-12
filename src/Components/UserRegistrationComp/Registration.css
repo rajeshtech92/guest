@@ -148,9 +148,66 @@
     }
   }
   
-  @media(max-width: 459px) {
-    .container .content .category {
-      flex-direction: column;
+  @media screen and (max-width: 480px) {
+    .container {
+        width: 100%; /* Full width on very small screens */
+        padding: 15px;
+        border-radius: 0; /* Remove rounded corners for full-screen effect */
     }
-  }
-  
+
+    .title {
+        font-size: 1.2rem;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+}
+  @media screen and (max-width: 768px) {
+    .container {
+        padding: 15px; /* Reduce padding for smaller devices */
+    }
+
+    .title {
+        font-size: 1.2rem;
+    }
+
+    .details {
+        font-size: 0.8rem;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        font-size: 0.8rem;
+        padding: 8px;
+    }
+
+    input[type="submit"] {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .container {
+        border-radius: 0;
+        padding: 10px;
+    }
+
+    .title {
+        font-size: 1rem;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        font-size: 0.7rem;
+        padding: 6px;
+    }
+
+    input[type="submit"] {
+        font-size: 0.8rem;
+        padding: 6px;
+    }
+}

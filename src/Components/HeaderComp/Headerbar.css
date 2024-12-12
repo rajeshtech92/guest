@@ -16,7 +16,7 @@
   position: relative;
   margin: auto;
   width: 100%;
-  max-width: 260px;
+  max-width: 135px;
   height: 50px;
   color: #fff;
   background: #b99272;
@@ -135,5 +135,13 @@ Footer{
 }
 .btn-epic div span {
   font-size: 8px;
+}
+.btn-epic div{
+  position: relative;
+  top: 11px;
+  font-size: x-small;
+}
+a.btn-epic::after{
+width: 10px;
 }
 }

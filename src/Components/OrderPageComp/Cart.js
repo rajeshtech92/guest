@@ -195,15 +195,16 @@ const Cart = () => {
     console.log(selectedMenu);
     console.log(inputRows);
 
-    const orderItems = [];
+    // const orderItems = [];
 
     // Iterate over each menuId in selectedMenu
-    selectedMenu.forEach((menuId, index) => {
-      if (index < inputRows.length) {
-        const row = inputRows[index]; 
-        const { gstAmount } = calculateGST(row.totalPrice, gstRate);
-        orderItems.push({
-          orderItemID: 0,
+    const orderItems = inputRows.map((row, index) => {
+      const menuId = selectedMenu[index % selectedMenu.length]; // Cycle through menu IDs
+      const totalPrice = row.price * row.units;
+      const gstAmount = totalPrice * gstRate;
+  
+      return {
+        orderItemID: 0,
           orderID: newOrderId,
           menuId: parseInt(menuId), 
           menuItemId: parseInt(row.menuItemId),
@@ -212,9 +213,7 @@ const Cart = () => {
           price: parseFloat(row.price),
           itemTotal: parseFloat(row.totalPrice),
           gst: gstAmount.toFixed(2),
-
-        });
-      }
+      };
     });
 
     try {
@@ -339,7 +338,7 @@ const Cart = () => {
               <TableRow>
                 <TableCell className="texts-color">Sno</TableCell>
                 <TableCell className="texts-color">Menu Item</TableCell>
-                <TableCell className="texts-color">units</TableCell>
+                <TableCell className="texts-color">Units</TableCell>
                 <TableCell className="texts-color">Price</TableCell>
                 <TableCell className="texts-color">Total</TableCell>
                 <TableCell className="texts-color">GST (5%)</TableCell>

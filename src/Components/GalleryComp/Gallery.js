@@ -111,7 +111,7 @@ function Gallery() {
           </Box>
         </div>
       ) : (
-        <>
+        <div className='responsive'>
           <HeaderProfile />
           <Grid container spacing={4} className="gallery-content">
             <Grid item xs={12}>
@@ -206,7 +206,7 @@ function Gallery() {
           </div> */}
           <BannerSection2 setLoading={setLoading}/>
           <Footer setLoading={setLoading}/>
-        </>
+        </div>
       )}
     </div>
   );

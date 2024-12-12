@@ -265,12 +265,19 @@ function Headerbar() {
                           my: 2,
                           color: activePage === page ? "red" : "white",
                           display: "block",
-                          fontSize: { xs: "12px", md: "14px" },
-                          lineHeight: "50px",
+                          fontSize: { xs: "10px", sm: "12px", md: "14px" },
+                          lineHeight: { xs: "30px", sm: "35px", md: "40px" },
                           textTransform: "uppercase",
                           letterSpacing: "0.03em",
                           textDecoration: "none",
                           fontWeight: 600,
+                          padding: {
+                            xs: "6px 10px",
+                            sm: "8px 16px",
+                            md: "10px 20px",
+                          },
+                          width: { xs: "100%", sm: "auto" },
+                          boxSizing: "border-box",
                           "&:hover": {
                             color: "#b99272",
                           },
@@ -280,24 +287,40 @@ function Headerbar() {
                       </Button>
                     ))}
                   </Box>
-                  <RouterLink
-                    to="/cart"
-                    className="btn-epic"
-                    style={{
-                      width: "100%",
-                      maxWidth: "120px",
-                      textAlign: "center",
-                    }}
-                  >
-                    <div className="ORDER"
+                  <RouterLink to="/cart" className="btn-epic">
+                    <div
+                      className="ORDER"
                       style={{
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
+                        justifyContent: "center",
+                        width: "100%", 
+                        maxWidth: "120px", 
+                        padding: "8px", 
+                        boxSizing: "border-box", 
                       }}
                     >
-                      <span className="ORDER-NOW" style={{ fontSize: "12px" }}>ORDER NOW</span>
-                      <span className="ORDER-NOW" style={{ fontSize: "12px" }}>ORDER NOW</span>
+                      <span
+                        className="ORDER-NOW"
+                        style={{
+                          fontSize: "10px",
+                          lineHeight: "14px",
+                          textAlign: "center",
+                        }}
+                      >
+                        ORDER NOW
+                      </span>
+                      <span
+                        className="ORDER-NOW"
+                        style={{
+                          fontSize: "10px",
+                          lineHeight: "14px",
+                          textAlign: "center",
+                        }}
+                      >
+                        ORDER NOW
+                      </span>
                     </div>
                   </RouterLink>
                   <Box sx={{ flexGrow: 0, ml: { xs: 1, md: "20px" } }}>

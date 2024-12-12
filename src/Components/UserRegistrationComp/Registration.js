@@ -62,7 +62,7 @@ function Registration() {
     return (
         <div className="wrapper">
             <ToastContainer />
-            <div className="container" style={{ width: '50%', background:'#ffff' }}>
+            <div className="container" style={{ width: '100%', background:'#ffff' }}>
                 <div className="title">Registration</div>
                 <div className="content">
                     <form onSubmit={handleSubmit}>

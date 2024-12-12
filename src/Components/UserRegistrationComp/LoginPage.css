@@ -141,3 +141,20 @@
 .input-fields .signup-link a:hover {
   text-decoration: underline;
 }
+@media (max-width: 320px) {
+  .wrappers {
+    padding: 15px;
+  }
+
+  .titles span {
+    font-size: 20px;
+  }
+
+  .input-fields .rows input {
+    font-size: 12px;
+  }
+
+  .rows.button input {
+    font-size: 14px;
+  }
+}

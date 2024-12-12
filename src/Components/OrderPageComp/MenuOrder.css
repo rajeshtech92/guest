@@ -121,26 +121,15 @@ body {
   }
 
   .pagination-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
   }
 
   .Dialog_Box {
     padding: 10px;
   }
- .GRAND-TOTAL {
-    text-align: left !important;
+    .grand-total-text {
+      text-align: left !important;
   }
-
-  .GRAND-TOTAL strong {
-    display: block;
-    text-align: left;
-    margin-bottom: 8px;
-  }
-  .GRAND-TOTAL .grand-total-value {
-    text-align: left !important;
-    padding-left: 8px !important;
-  }
+  
  
 }

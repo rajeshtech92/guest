@@ -378,22 +378,22 @@ function MenuImage() {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         style={{
-                          backgroundColor: "rgb(221, 221, 221);", // Blue background to match the table head
-                          color: "black", // White text color for contrast
-                          borderTop: "1px solid #ddd", // Border at the top
-                          display: "flex", // Flexbox layout for alignment
-                          justifyContent: "end", // Even spacing for elements
+                          backgroundColor: "rgb(221, 221, 221);", 
+                          color: "black", 
+                          borderTop: "1px solid #ddd",
+                          display: "flex", 
+                          justifyContent: "end", 
                         }}
                         classes={{
                           actions: {
-                            color: "black", // White icons for page navigation
+                            color: "black", 
                           },
                         }}
                         labelRowsPerPage={
                           <span style={{ color: "black" }}>Rows per page:</span>
                         }
                         labelDisplayedRows={({ from, to, count }) => (
-                          <span style={{ color: "black" }}>
+                          <span style={{ color: "black"  }}>
                             {from}-{to} of{" "}
                             {count !== -1 ? count : `more than ${to}`}
                           </span>
@@ -409,7 +409,7 @@ function MenuImage() {
               </div>
             </div>
           </section>
-          <h4 style={{color:"white", marginLeft:"33px", marginBottom:"50px"}}>Our Food items</h4>
+          <h4 className="OurFoodItems">Our Food items</h4>
           <BannerSection2 setLoading={setLoading} />
           <Footer setLoading={setLoading} />
         </>

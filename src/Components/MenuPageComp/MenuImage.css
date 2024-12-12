@@ -5,8 +5,8 @@
   background-color: #090c0f;
   margin-top: -6px;
 }
-.menu-bg{
-background:  #121212;
+.menu-bg {
+  background: #121212;
 }
 .kf-menu-container {
   margin: 0 auto;
@@ -116,10 +116,92 @@ background:  #121212;
   border-color: black; /* Default border color */
 }
 
-.custom-search-input .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+.custom-search-input
+  .MuiOutlinedInput-root:hover
+  .MuiOutlinedInput-notchedOutline {
   border-color: black; /* Border color on hover */
 }
 
-.custom-search-input .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-  border-color: black;; /* Border color when focused */
+.custom-search-input
+  .MuiOutlinedInput-root.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border-color: black; /* Border color when focused */
+}
+.OurFoodItems {
+  color: white;
+  font-size: 40px;
+  margin-left: 33px;
+  margin-bottom: 50px;
+  font-family: "Oswald", sans-serif;
+}
+@media only screen and (max-width: 320px) {
+  .kf-menu-container {
+    padding: 10px;
+  }
+
+  .kf-title {
+    font-size: 20px; 
+  }
+
+  .kf-subtitle {
+    font-size: 14px; 
+  }
+
+  .kf-filter a {
+    font-size: 12px; 
+    padding: 5px;
+  }
+
+  .kf-menu-items {
+    padding: 10px; 
+  }
+
+  .TableHead-color {
+    font-size: 12px; 
+  }
+
+  .TableRow td {
+    font-size: 10px; 
+    padding: 4px; 
+  }
+
+  .custom-search-input {
+    font-size: 14px;
+  }
+
+  .search-container {
+    margin: 10px 0;
+  }
+
+  .card {
+    padding: 10px;
+  }
+
+  .kf-titles h4 {
+    font-size: 16px;
+  }
+  .section-kf-menu {
+    margin-top: -64px;
+  }
+  .MuiTablePagination-root span {
+    font-size: 10px; 
+  }
+
+  .MuiTablePagination-input {
+    font-size: 10px;
+
+  }
+  .kf-filter {
+    margin: -3px 0 -20px 0px;
+  }
+  .section-kf-menu.kf-menu-tabs {
+    font-size: 12px;
+    padding-top: 0px;
+  }
+
+  
+   h4.OurFoodItems{
+    font-size: 16px;
+    text-align: center;
+   }
 }

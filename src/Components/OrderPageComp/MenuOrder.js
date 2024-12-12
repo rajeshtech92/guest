@@ -161,8 +161,6 @@ const StyledPagination = styled(TablePagination)(({ theme }) => ({
     flexDirection: "column", // Stack pagination items vertically
     alignItems: "center", // Center-align everything
     textAlign: "center",
-   
-
 
     "& .MuiTablePagination-toolbar": {
       flexDirection: "column", // Stack toolbar items
@@ -529,17 +527,18 @@ const MenuOrder = () => {
       </Typography>
       <Box display="flex" alignItems="center" mb={1}>
         <TextField
+          type="text"
           className="TextField-Search"
-          label="Search"
           variant="outlined"
           size="small"
+          placeholder="Search..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           style={{
             marginLeft: "14px",
             width: window.innerWidth < 320 ? "100%" : "auto",
           }}
-        />
+        ></TextField>
         <Box
           display="flex"
           alignItems="center"
@@ -636,11 +635,15 @@ const MenuOrder = () => {
             })}
           </TableBody>
           <TableRow className="GRAND-TOTAL">
-            <TableCell colSpan={5} style={{ textAlign: "right" }}>
-              <strong>GRAND TOTAL: GST INCLUDED</strong>
-            </TableCell>
-            <TableCell className="grand-total-value" style={{ color: "green" }}>
-              <strong>₹{grandTotal.toFixed(2)}</strong>
+            <TableCell
+              colSpan={5}
+              className="grand-total-text"
+              style={{ textAlign: "right" }}
+            >
+              <strong>GRAND TOTAL: GST INCLUDED</strong>{" "}
+              <strong style={{ color: "green" }}>
+                ₹{grandTotal.toFixed(2)}
+              </strong>
             </TableCell>
           </TableRow>
         </Table>
@@ -679,22 +682,59 @@ const MenuOrder = () => {
           }}
         >
           <DialogTitle>Order Details</DialogTitle>
-          <div className="Dialog_Box" style={{ textAlign: "center" }}>
+          <div
+            className="Dialog_Box"
+            style={{
+              textAlign: "center",
+              fontSize: "16px",
+              fontFamily: "sans-serif",
+              fontWeight: " 700",
+            }}
+          >
             <DialogContent>
               {selectedOrder ? (
                 <Box>
                   <Typography variant="h6">
-                    <span></span>Order ID: <span>{selectedOrder.orderID}</span>
+                    <span
+                      style={{
+                        fontSize: "16px",
+                        fontFamily: "sans-serif",
+                        fontWeight: " 700",
+                      }}
+                    >
+                      Order ID:{" "}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "16px",
+                        fontFamily: "sans-serif",
+                        fontWeight: " 700",
+                      }}
+                    >
+                      {selectedOrder.orderID}
+                    </span>
                     <br></br>
                     <br></br>
                   </Typography>
                   <Typography variant="body1" style={{ marginBottom: "8px" }}>
-                    <span style={{ color: "red" }}>Menu Item Name:</span>
+                    <span
+                      style={{
+                        // color: "red",
+                        fontSize: "16px",
+                        fontFamily: "sans-serif",
+                        fontWeight: " 700",
+                      }}
+                    >
+                      Menu Item Name:
+                    </span>
                     <span
                       style={{
                         float: "right",
                         color: "green",
                         marginRight: "20px",
+                        fontSize: "16px",
+                        fontFamily: "sans-serif",
+                        fontWeight: " 700",
                       }}
                     >
                       <span>{selectedOrder.menuItemName}</span>
@@ -702,11 +742,23 @@ const MenuOrder = () => {
                   </Typography>
 
                   <Typography variant="body1">
-                    <span style={{ marginLeft: "68px" }}>Units:</span>{" "}
+                    <span
+                      style={{
+                        marginLeft: "68px",
+                        fontSize: "16px",
+                        fontFamily: "sans-serif",
+                        fontWeight: " 700",
+                      }}
+                    >
+                      Units:
+                    </span>{" "}
                     <span
                       style={{
                         float: "right",
                         marginRight: "20px",
+                        fontSize: "16px",
+                        fontFamily: "sans-serif",
+                        fontWeight: " 700",
                       }}
                     >
                       {selectedOrder.units}
@@ -715,11 +767,23 @@ const MenuOrder = () => {
                     <br></br>
                   </Typography>
                   <Typography variant="body1">
-                    <span style={{ marginLeft: "83px" }}>Total:</span>{" "}
+                    <span
+                      style={{
+                        marginLeft: "83px",
+                        fontSize: "16px",
+                        fontFamily: "sans-serif",
+                        fontWeight: " 700",
+                      }}
+                    >
+                      Total:
+                    </span>{" "}
                     <span
                       style={{
                         float: "right",
                         marginRight: "20px",
+                        fontSize: "16px",
+                        fontFamily: "sans-serif",
+                        fontWeight: " 700",
                       }}
                     >
                       {selectedOrder.itemTotal}
@@ -728,9 +792,26 @@ const MenuOrder = () => {
                     <br></br>
                   </Typography>
                   <Typography variant="body1" style={{ marginBottom: "8px" }}>
-                    <span style={{ marginLeft: "48px" }}>Order Status: </span>
+                    <span
+                      style={{
+                        marginLeft: "48px",
+                        fontSize: "16px",
+                        fontFamily: "sans-serif",
+                        fontWeight: " 700",
+                      }}
+                    >
+                      Order Status:{" "}
+                    </span>
 
-                    <span style={{ float: "right", marginLeft: "8px" }}>
+                    <span
+                      style={{
+                        float: "right",
+                        marginLeft: "8px",
+                        fontSize: "16px",
+                        fontFamily: "sans-serif",
+                        fontWeight: " 700",
+                      }}
+                    >
                       <span>{getStatusLabel(selectedOrder.orderStatus)}</span>
                     </span>
                   </Typography>
@@ -741,7 +822,15 @@ const MenuOrder = () => {
             </DialogContent>
           </div>
           <DialogActions>
-            <Button onClick={handleCloseModal} color="primary">
+            <Button
+              onClick={handleCloseModal}
+              color="primary"
+              style={{
+                fontSize: "16px",
+                fontFamily: "sans-serif",
+                fontWeight: " 700",
+              }}
+            >
               Close
             </Button>
           </DialogActions>

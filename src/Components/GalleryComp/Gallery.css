@@ -130,6 +130,10 @@
   .grid-images img {
     width: 90%; /* Slight padding for small devices */
   }
+  .responsive{
+    margin-top: -64px;
+
+  }
 }
 
 

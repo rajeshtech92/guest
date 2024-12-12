@@ -251,7 +251,7 @@ const Banquet = () => {
               </Grid>
             </Grid>
           </Grid>
-          <h4 style={{color:"white",  margin: "10px 0" }}>Our Food items</h4>
+          <h4 className="Our-Food" style={{color:"white",   margin: "40px 72px "}}>Our Food items</h4>
           <Grid container spacing={2} style={{background:"white"}}>
             
           <Grid item xs={12} className="data-grid-container">
